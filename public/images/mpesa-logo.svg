@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <style>
+    .mpesa-text { font-family: Arial, sans-serif; font-weight: bold; }
+    .mpesa-green { fill: #25D366; }
+  </style>
+  <text x="10" y="40" class="mpesa-text mpesa-green" font-size="36">M-PESA</text>
+</svg> 

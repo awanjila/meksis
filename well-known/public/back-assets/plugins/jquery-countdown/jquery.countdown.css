@@ -1,0 +1,117 @@
+/* jQuery Countdown styles 2.0.0. */
+
+.countdown-rtl {
+	direction: rtl;
+}
+.countdown-holding span {
+	color: #888;
+}
+ .countdown-row {
+	clear: both;
+	width: 100%;
+	padding: 0px 2px;
+	text-align: center;
+}
+.ecommerce-counter .countdown {
+	border-radius: 5px;
+    margin-bottom: 20px;
+    max-width: 500px;
+    margin: 17px 12px;
+}
+.ecommerce-counter .countdown li{
+	display:inline-block;
+}
+.ecommerce-counter .countdown .number{
+	font-size: 23px;
+    font-weight: bold;
+    color: #000000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    line-height: 50px;
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+	border:1px solid rgba(0, 0, 0, 0.1);
+    background:#3a7afe;
+}
+.ecommerce-counter .countdown span{
+	display:block;
+}
+.ecommerce-counter .countdown .time{
+	font-size: 14px;
+    color: #000000;
+    padding-top: 5px;
+    text-align: center;
+}
+@media (max-width:991px){
+	.ecommerce-counter .countdown li{
+		margin:20px 10px 10px 10px;
+	}
+	.ecommerce-counter .is-countdown{
+		margin-top:20px;
+	}
+}
+@media (min-width:992px){
+	.ecommerce-counter .countdown li {
+		margin: 0px 8px 0px 8px;
+	}
+}
+
+.countdown {
+	border-radius: 5px;
+    margin-bottom: 20px;
+    margin: 5px auto 30px auto;
+	padding:0;
+}
+.countdown li{
+	display:inline-block;
+}
+.countdown .number{
+	font-size: 30px;
+	font-weight: 500;
+	color: #3a7afe;
+	width:90px;
+	height:90px;
+	line-height:2.5;
+	text-align:center;
+	margin:0 auto;
+	position:relative;
+	overflow:hidden;
+	background: #f1f5ff;
+	border-radius:50px;
+}
+.countdown span{
+	display:block;
+}
+.countdown .time{
+	font-size: 15px;
+	color: #000;
+	padding-top:12px;
+    text-transform: uppercase;
+}
+@media (max-width:991px){
+	.countdown li{
+		margin:20px 10px 10px 10px;
+	}
+	.is-countdown{
+		margin-top:20px;
+	}
+}
+@media (min-width:992px){
+	.countdown li {
+		margin: 30px 15px 5px 15px;
+	}
+}
+.construction{
+	z-index:10;
+	padding: 25px;
+	color:#000;
+}
+.construction a{
+	color:rgba(255,255,255,.5)
+}
+.construction a:hover{
+	color:#000;
+}

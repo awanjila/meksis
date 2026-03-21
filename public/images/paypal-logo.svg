@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60">
+  <style>
+    .paypal-text { font-family: Arial, sans-serif; font-weight: bold; }
+    .paypal-blue { fill: #0070ba; }
+  </style>
+  <text x="10" y="40" class="paypal-text paypal-blue" font-size="36">PayPal</text>
+</svg> 

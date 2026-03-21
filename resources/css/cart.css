@@ -1,0 +1,14 @@
+.cart-toggle-container {
+    display: inline-block;
+    margin-left: 15px;
+    vertical-align: middle;
+}
+
+.cart-toggle-container .cart-toggle-btn {
+    color: #333;
+    font-size: 1.2rem;
+}
+
+.cart-toggle-container .cart-count {
+    background-color: #ff4444;
+} 
