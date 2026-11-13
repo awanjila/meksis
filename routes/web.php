@@ -91,6 +91,17 @@ Route::get('pricing_and_packages', 'Pricing')->name('pricing');
 
 Route::controller(FaqController::class)->group(function () {
     Route::get('faqs', 'FaqPage')->name('faqs.index');
+
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('faq/settings', 'EditSettings')->name('faq.settings');
+        Route::post('faq/settings', 'UpdateSettings')->name('faq.settings.update');
+        Route::get('faq/add', 'AddFaq')->name('faq.add');
+        Route::post('faq/store', 'StoreFaq')->name('faq.store');
+        Route::get('faq/index', 'IndexOfFaqs')->name('faq.index');
+        Route::get('faq/edit/{id}', 'EditFaq')->name('faq.edit');
+        Route::post('faq/update', 'UpdateFaq')->name('faq.update');
+        Route::get('faq/delete/{id}', 'DeleteFaq')->name('faq.delete');
+    });
 });
 
 //services
