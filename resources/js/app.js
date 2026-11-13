@@ -39,6 +39,7 @@ import {
 
 // Import components
 import ShopCategories from '@/components/ShopCategories.vue';
+import FaqsSection from '@/components/FaqsSection.vue';
 import ContactPage from './pages/Contact.vue';
 import OurWorks from './pages/OurWorks.vue';
 import AboutUs from './pages/AboutUs.vue';
@@ -122,6 +123,7 @@ app.component('font-awesome-icon', FontAwesomeIcon);
 
 // Register components
 app.component('shop-categories', ShopCategories);
+app.component('faqs-section', FaqsSection);
 app.component('contact-page', ContactPage);
 app.component('contact-form', ContactForm);
 app.component('contact-info-card', ContactInfoCard);
