@@ -9,6 +9,7 @@ use App\Http\Controllers\BackOffice\ProductController;
 use App\Http\Controllers\BackOffice\PortfolioController;
 use App\Http\Controllers\BackOffice\CategoryController;
 use App\Http\Controllers\BackOffice\BlogController;
+use App\Http\Controllers\BackOffice\FaqController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\PaypalController;
@@ -87,6 +88,10 @@ Route::get('pricing_and_packages', 'Pricing')->name('pricing');
  });
 
 // })->middleware(['auth', 'verified']);
+
+Route::controller(FaqController::class)->group(function () {
+    Route::get('faqs', 'FaqPage')->name('faqs.index');
+});
 
 //services
 Route::controller(ServiceController::class)->group(function(){
@@ -195,7 +200,6 @@ Route::controller(CatalogController::class)->group(function(){
    
     Route::get('/terms', 'Terms')->name('terms');
  
-    Route::get('/faqs', 'faq')->name('faqs');
     Route::post('/check-coupon',  'checkCoupon')->name('check_coupon');
 
     Route::get('/distributor-application-form', 'BDistributor')->name('bdistributor');
