@@ -60,6 +60,7 @@ import Header from './components/layout/Header.vue';
 import Footer from './components/layout/Footer.vue';
 import BlogList from './pages/BlogList.vue';
 import BlogDetails from './pages/BlogDetails.vue';
+import FaqsPage from './pages/FaqsPage.vue';
 
 
 // Add the imported icons to the library
@@ -144,6 +145,7 @@ app.component('service-detail', ServiceDetail);
 app.component('welcome-page', Welcome);
 app.component('blog-list', BlogList);
 app.component('blog-details', BlogDetails);
+app.component('faqs-page', FaqsPage);
 
 // Use Pinia
 app.use(pinia);

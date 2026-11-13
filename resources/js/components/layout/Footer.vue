@@ -110,6 +110,7 @@
           <ul class="footer-menu">
             <li><a href="/">HOME</a></li>
             <li><a href="/about">ABOUT</a></li>
+            <li><a href="/faqs">FAQS</a></li>
             <li><a href="/blogs">BLOG</a></li>
             <li><a href="/products">PRODUCTS</a></li>
             <li><a href="/contact">CONTACT</a></li>

@@ -16,6 +16,9 @@
     <!-- Contact Section Component -->
     <ContactSection />
 
+    <!-- FAQ Section Component -->
+    <FaqsSection />
+
     <!-- Google Map Section -->
     <section class="map-section">
       <div class="container">
@@ -33,6 +36,7 @@
 
 <script setup>
 import ContactSection from '../components/ContactSection.vue'
+import FaqsSection from '@/components/FaqsSection.vue'
 </script>
 
 <style scoped>

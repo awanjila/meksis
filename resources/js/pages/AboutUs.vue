@@ -148,11 +148,15 @@
         </div>
       </div>
     </section>
+
+    <!-- FAQ Section Component -->
+    <FaqsSection />
   </div>
 </template>
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import FaqsSection from '@/components/FaqsSection.vue'
 
 const activeSlide = ref(0)
 let sliderInterval = null

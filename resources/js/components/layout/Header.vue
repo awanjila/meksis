@@ -82,6 +82,7 @@
             </div>
 
             <a href="/blogs" class="nav-link">BLOG</a>
+            <a href="/faqs" class="nav-link">FAQS</a>
             <a href="/contact" class="nav-link">CONTACT</a>
           </nav>
 
@@ -132,6 +133,7 @@
           </div>
 
           <a href="/blogs" class="mobile-nav-link">BLOG</a>
+          <a href="/faqs" class="mobile-nav-link">FAQS</a>
           <a href="/contact" class="mobile-nav-link">CONTACT</a>
 
           <!-- Mobile CTA Buttons -->
