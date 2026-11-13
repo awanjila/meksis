@@ -68,4 +68,9 @@ class FaqApiTest extends TestCase
         $this->getJson('/api/faqs?limit=51')->assertStatus(422);
         $this->getJson('/api/faqs?limit=abc')->assertStatus(422);
     }
+
+    public function test_it_rejects_invalid_limit_values_for_non_json_requests(): void
+    {
+        $this->get('/api/faqs?limit=0')->assertStatus(422);
+    }
 }

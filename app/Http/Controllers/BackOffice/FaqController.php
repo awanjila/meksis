@@ -30,7 +30,7 @@ class FaqController extends Controller
 
         FaqSetting::current()->update([
             'title' => $request->title,
-            'subtitle' => $request->subtitle,
+            'subtitle' => $request->subtitle ?? '',
         ]);
 
         return redirect()->back()->with([

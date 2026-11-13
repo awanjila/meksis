@@ -118,4 +118,20 @@ class FaqAdminTest extends TestCase
             'subtitle' => 'Answers',
         ]);
     }
+
+    public function test_admin_can_clear_the_faq_subtitle(): void
+    {
+        $user = User::factory()->create();
+
+        $this->actingAs($user)->post(route('faq.settings.update'), [
+            'title' => 'QUESTIONS',
+            'subtitle' => '',
+        ])->assertRedirect();
+
+        $this->assertDatabaseHas('faq_settings', [
+            'id' => 1,
+            'title' => 'QUESTIONS',
+            'subtitle' => '',
+        ]);
+    }
 }
