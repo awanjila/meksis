@@ -39,6 +39,7 @@ import {
 
 // Import components
 import ShopCategories from '@/components/ShopCategories.vue';
+import FaqsSection from '@/components/FaqsSection.vue';
 import ContactPage from './pages/Contact.vue';
 import OurWorks from './pages/OurWorks.vue';
 import AboutUs from './pages/AboutUs.vue';
@@ -59,6 +60,7 @@ import Header from './components/layout/Header.vue';
 import Footer from './components/layout/Footer.vue';
 import BlogList from './pages/BlogList.vue';
 import BlogDetails from './pages/BlogDetails.vue';
+import FaqsPage from './pages/FaqsPage.vue';
 
 
 // Add the imported icons to the library
@@ -122,6 +124,7 @@ app.component('font-awesome-icon', FontAwesomeIcon);
 
 // Register components
 app.component('shop-categories', ShopCategories);
+app.component('faqs-section', FaqsSection);
 app.component('contact-page', ContactPage);
 app.component('contact-form', ContactForm);
 app.component('contact-info-card', ContactInfoCard);
@@ -142,6 +145,7 @@ app.component('service-detail', ServiceDetail);
 app.component('welcome-page', Welcome);
 app.component('blog-list', BlogList);
 app.component('blog-details', BlogDetails);
+app.component('faqs-page', FaqsPage);
 
 // Use Pinia
 app.use(pinia);

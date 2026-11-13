@@ -9,6 +9,7 @@ use App\Http\Controllers\BackOffice\CategoryController;
 use App\Http\Controllers\BackOffice\PortfolioController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\FaqController;
 use App\Models\BackOffice\Blog;
 
 
@@ -85,6 +86,8 @@ Route::get('/blogs', function () {
     ->latest()
     ->get();
 });
+
+Route::get('/faqs', [FaqController::class, 'index']);
 
 Route::get('/blog-categories', function () {
     return \App\Models\BackOffice\BlogCategory::select('id', 'name', 'slug')->get();

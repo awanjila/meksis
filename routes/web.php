@@ -9,6 +9,7 @@ use App\Http\Controllers\BackOffice\ProductController;
 use App\Http\Controllers\BackOffice\PortfolioController;
 use App\Http\Controllers\BackOffice\CategoryController;
 use App\Http\Controllers\BackOffice\BlogController;
+use App\Http\Controllers\BackOffice\FaqController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\PaypalController;
@@ -87,6 +88,21 @@ Route::get('pricing_and_packages', 'Pricing')->name('pricing');
  });
 
 // })->middleware(['auth', 'verified']);
+
+Route::controller(FaqController::class)->group(function () {
+    Route::get('faqs', 'FaqPage')->name('faqs.index');
+
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('faq/settings', 'EditSettings')->name('faq.settings');
+        Route::post('faq/settings', 'UpdateSettings')->name('faq.settings.update');
+        Route::get('faq/add', 'AddFaq')->name('faq.add');
+        Route::post('faq/store', 'StoreFaq')->name('faq.store');
+        Route::get('faq/index', 'IndexOfFaqs')->name('faq.index');
+        Route::get('faq/edit/{id}', 'EditFaq')->name('faq.edit');
+        Route::post('faq/update', 'UpdateFaq')->name('faq.update');
+        Route::get('faq/delete/{id}', 'DeleteFaq')->name('faq.delete');
+    });
+});
 
 //services
 Route::controller(ServiceController::class)->group(function(){
@@ -195,7 +211,6 @@ Route::controller(CatalogController::class)->group(function(){
    
     Route::get('/terms', 'Terms')->name('terms');
  
-    Route::get('/faqs', 'faq')->name('faqs');
     Route::post('/check-coupon',  'checkCoupon')->name('check_coupon');
 
     Route::get('/distributor-application-form', 'BDistributor')->name('bdistributor');

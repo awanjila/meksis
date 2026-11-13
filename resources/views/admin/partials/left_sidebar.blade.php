@@ -57,6 +57,27 @@
                     </div>
                 </li>
 
+                <li>
+                    <a href="#faq" data-bs-toggle="collapse">
+                        <i class="mdi mdi-help-circle-outline"></i>
+                        <span> FAQ SECTION </span>
+                        <span class="menu-arrow"></span>
+                    </a>
+                    <div class="collapse" id="faq">
+                        <ul class="nav-second-level">
+                            <li>
+                                <a href="{{ route('faq.settings') }}">FAQ Settings</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('faq.add') }}">Add a FAQ</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('faq.index') }}">All FAQs</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
                     <li>
                     <a href="#service" data-bs-toggle="collapse">
                         <i class="mdi mdi-text-box-multiple-outline"></i>
