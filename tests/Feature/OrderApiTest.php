@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -157,6 +158,84 @@ class OrderApiTest extends TestCase
         $this->postJson('/api/orders', $this->payload([
             'items' => [['id' => $product->id, 'quantity' => 100]],
         ]))->assertStatus(422)->assertJsonValidationErrors('items.0.quantity');
+    }
+
+    public function test_checkout_rejects_unknown_products_without_creating_an_order(): void
+    {
+        Mail::fake();
+
+        $this->postJson('/api/orders', $this->payload([
+            'items' => [['id' => 999999, 'quantity' => 1]],
+        ]))->assertStatus(422)->assertJsonValidationErrors('items');
+
+        $this->assertDatabaseCount('orders', 0);
+        Mail::assertNothingSent();
+    }
+
+    public function test_checkout_rejects_duplicate_product_ids_without_creating_an_order(): void
+    {
+        Mail::fake();
+        $product = $this->product();
+
+        $this->postJson('/api/orders', $this->payload([
+            'items' => [
+                ['id' => $product->id, 'quantity' => 1],
+                ['id' => $product->id, 'quantity' => 2],
+            ],
+        ]))->assertStatus(422)->assertJsonValidationErrors('items.1.id');
+
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertSame('5', $product->fresh()->product_store);
+    }
+
+    public function test_checkout_rechecks_orderability_under_lock(): void
+    {
+        Mail::fake();
+        $product = $this->product();
+
+        Product::retrieved(function () use ($product) {
+            DB::table('products')->where('id', $product->id)->update(['selling_price' => '0']);
+            Product::flushEventListeners();
+        });
+
+        $this->postJson('/api/orders', $this->payload([
+            'items' => [['id' => $product->id, 'quantity' => 1]],
+        ]))->assertStatus(422)->assertJsonValidationErrors('items');
+
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertDatabaseCount('order_items', 0);
+        $this->assertSame('5', $product->fresh()->product_store);
+    }
+
+    public function test_checkout_rolls_back_when_product_is_deleted_under_lock(): void
+    {
+        Mail::fake();
+        $product = $this->product();
+
+        Product::retrieved(function () use ($product) {
+            DB::table('products')->where('id', $product->id)->delete();
+            Product::flushEventListeners();
+        });
+
+        $this->postJson('/api/orders', $this->payload([
+            'items' => [['id' => $product->id, 'quantity' => 1]],
+        ]))->assertStatus(422)->assertJsonValidationErrors('items');
+
+        $this->assertDatabaseCount('orders', 0);
+        $this->assertDatabaseCount('order_items', 0);
+    }
+
+    public function test_checkout_treats_non_numeric_stock_as_zero(): void
+    {
+        Mail::fake();
+        $product = $this->product(['product_store' => 'n/a']);
+
+        $this->postJson('/api/orders', $this->payload([
+            'items' => [['id' => $product->id, 'quantity' => 2]],
+        ]))->assertCreated();
+
+        $this->assertDatabaseCount('orders', 1);
+        $this->assertSame('n/a', $product->fresh()->product_store);
     }
 
     public function test_honeypot_returns_success_without_creating_an_order(): void

@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 class OrderController extends Controller
 {
+    private const REFERENCE_ATTEMPTS = 5;
+
     public function store(Request $request): JsonResponse
     {
         if ($request->filled('website')) {
@@ -52,29 +55,34 @@ class OrderController extends Controller
             ]);
         }
 
-        $lines = collect($data['items'])->map(function ($item) use ($products) {
-            $product = $products->get((int) $item['id']);
-            $quantity = (int) $item['quantity'];
-            $unitPrice = round((float) $product->selling_price, 2);
+        $order = DB::transaction(function () use ($data) {
+            $lines = collect($data['items'])->sortBy('id')->map(function ($item) {
+                $product = Product::whereKey((int) $item['id'])->lockForUpdate()->first();
 
-            return [
-                'product_id' => $product->id,
-                'quantity' => $quantity,
-                'unit_price' => $unitPrice,
-                'subtotal' => round($unitPrice * $quantity, 2),
-            ];
-        });
+                if (! $product || ! $product->isOrderable()) {
+                    throw ValidationException::withMessages([
+                        'items' => ['Some products are no longer available. Remove them from your cart and try again.'],
+                    ]);
+                }
 
-        $total = round($lines->sum('subtotal'), 2);
+                $quantity = (int) $item['quantity'];
+                $unitPrice = round((float) $product->selling_price, 2);
 
-        $order = DB::transaction(function () use ($data, $lines, $total) {
+                return [
+                    'product' => $product,
+                    'quantity' => $quantity,
+                    'unit_price' => $unitPrice,
+                    'subtotal' => round($unitPrice * $quantity, 2),
+                ];
+            });
+
             $order = Order::create([
                 'reference' => $this->generateReference(),
                 'customer_name' => $data['name'],
                 'customer_email' => $data['email'],
                 'customer_phone' => $data['phone'],
                 'company' => $data['company'] ?? null,
-                'total_amount' => $total,
+                'total_amount' => round($lines->sum('subtotal'), 2),
                 'status' => 'pending',
                 'payment_status' => 'pending',
                 'shipping_address' => $data['address'],
@@ -82,13 +90,17 @@ class OrderController extends Controller
             ]);
 
             foreach ($lines as $line) {
-                $order->items()->create($line);
+                $order->items()->create([
+                    'product_id' => $line['product']->id,
+                    'quantity' => $line['quantity'],
+                    'unit_price' => $line['unit_price'],
+                    'subtotal' => $line['subtotal'],
+                ]);
 
-                $product = Product::whereKey($line['product_id'])->lockForUpdate()->first();
-                $stock = is_numeric($product->product_store) ? (float) $product->product_store : 0;
+                $stock = is_numeric($line['product']->product_store) ? (float) $line['product']->product_store : 0;
 
                 if ($stock >= $line['quantity']) {
-                    $product->decrement('product_store', $line['quantity']);
+                    $line['product']->decrement('product_store', $line['quantity']);
                 }
             }
 
@@ -100,13 +112,13 @@ class OrderController extends Controller
         try {
             Mail::to($order->customer_email)->send(new OrderConfirmation($order));
         } catch (\Throwable $e) {
-            Log::error('Order confirmation email failed: '.$e->getMessage(), ['reference' => $order->reference]);
+            Log::error('Order confirmation email failed: '.$e::class, ['reference' => $order->reference]);
         }
 
         try {
             Mail::to(config('shop.notification_email'))->send(new NewOrderNotification($order));
         } catch (\Throwable $e) {
-            Log::error('New order notification email failed: '.$e->getMessage(), ['reference' => $order->reference]);
+            Log::error('New order notification email failed: '.$e::class, ['reference' => $order->reference]);
         }
 
         return response()->json([
@@ -118,10 +130,14 @@ class OrderController extends Controller
 
     private function generateReference(): string
     {
-        do {
+        for ($attempt = 0; $attempt < self::REFERENCE_ATTEMPTS; $attempt++) {
             $reference = 'MEK-'.Str::upper(Str::random(8));
-        } while (Order::where('reference', $reference)->exists());
 
-        return $reference;
+            if (! Order::where('reference', $reference)->exists()) {
+                return $reference;
+            }
+        }
+
+        throw new RuntimeException('Could not generate a unique order reference.');
     }
 }
