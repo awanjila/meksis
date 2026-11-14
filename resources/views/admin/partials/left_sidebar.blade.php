@@ -44,13 +44,13 @@
                <li>
                     <a href="#about" data-bs-toggle="collapse">
                         <i class="mdi mdi-text-box-multiple-outline"></i>
-                        <span> ABOUT PAGE </span>
+                        <span> ABOUT &amp; HOMEPAGE </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <div class="collapse" id="about">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('edit.about.page') }}">About Content</a>
+                                <a href="{{ route('edit.about.page') }}">About &amp; Homepage Content</a>
                             </li>
                             
                         </ul>
@@ -125,6 +125,13 @@
                 </li>
 
                 <li class="menu-title mt-2">Apps</li>
+
+                <li>
+                    <a href="{{ route('orders.index') }}">
+                        <i class="mdi mdi-cart-outline"></i>
+                        <span> ORDERS </span>
+                    </a>
+                </li>
 
                 <li>
                     <a href="#sidebarEmail" data-bs-toggle="collapse">
@@ -204,7 +211,7 @@
     <li>
        <a href="#product" data-bs-toggle="collapse">
        <i class="fa fa-briefcase "></i>
-      
+       <span> Product Management </span>
        <span class="menu-arrow"></span>
        </a>
        <div class="collapse" id="product">

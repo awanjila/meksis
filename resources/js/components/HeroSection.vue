@@ -10,10 +10,10 @@
       >
         <div
           v-for="(slide, index) in slides"
-          :key="index"
+          :key="slide.id ?? index"
           v-show="currentSlide === index"
           class="slide"
-          :style="{ backgroundImage: `url(${slide.image})` }"
+          :style="{ backgroundImage: slide.image ? `url(${slide.image})` : 'none' }"
         >
           <div class="slide-overlay"></div>
 
@@ -57,42 +57,45 @@
 </template>
 
 <script>
+const defaultSlides = [
+  {
+    title: 'ELEVATED STEEL WATER TANKS',
+    description:
+      'Premium quality pressed steel water tanks for industrial and commercial water storage solutions in Kenya.',
+    image: '/images/hero/tank-hero.jpg'
+  },
+  {
+    title: 'GALVANIZED STEEL TANKS',
+    description:
+      'Hot-dipped galvanized steel tanks with superior corrosion resistance and long-lasting durability.',
+    image: '/images/hero/galvanized-tanks.jpg'
+  },
+  {
+    title: 'GRP WATER TANKS',
+    description:
+      'Lightweight Glass Reinforced Plastic tanks - the modern solution for clean water storage.',
+    image: '/images/hero/grp-tanks.jpg'
+  },
+  {
+    title: 'STEEL FABRICATION',
+    description:
+      'Custom steel fabrication services for industrial and commercial applications.',
+    image: '/images/hero/tank-hero.jpg'
+  }
+]
+
 export default {
   name: 'HeroSection',
   data() {
     return {
       currentSlide: 0,
       autoplayInterval: null,
-      slides: [
-        {
-          title: 'ELEVATED STEEL WATER TANKS',
-          description:
-            'Premium quality pressed steel water tanks for industrial and commercial water storage solutions in Kenya.',
-          image: '/images/hero/tank-hero.jpg'
-        },
-        {
-          title: 'GALVANIZED STEEL TANKS',
-          description:
-            'Hot-dipped galvanized steel tanks with superior corrosion resistance and long-lasting durability.',
-          image: '/images/hero/galvanized-tanks.jpg'
-        },
-        {
-          title: 'GRP WATER TANKS',
-          description:
-            'Lightweight Glass Reinforced Plastic tanks - the modern solution for clean water storage.',
-          image: '/images/hero/grp-tanks.jpg'
-        },
-        {
-          title: 'STEEL FABRICATION',
-          description:
-            'Custom steel fabrication services for industrial and commercial applications.',
-          image: '/images/hero/steel-fabrication.jpg'
-        }
-      ]
+      slides: defaultSlides
     }
   },
 
   mounted() {
+    this.fetchSlides()
     this.startAutoplay()
   },
 
@@ -101,17 +104,48 @@ export default {
   },
 
   methods: {
+    async fetchSlides() {
+      try {
+        const res = await fetch('/api/home-slides')
+        if (!res.ok) throw new Error('Unable to load hero slides')
+
+        const data = await res.json()
+
+        if (Array.isArray(data.slides) && data.slides.length > 0) {
+          this.slides = data.slides
+          this.currentSlide = 0
+          this.restartAutoplay()
+        }
+      } catch (error) {
+        console.error('Error fetching hero slides:', error)
+      }
+    },
+    restartAutoplay() {
+      this.stopAutoplay()
+      this.startAutoplay()
+    },
     startAutoplay() {
-      this.autoplayInterval = setInterval(this.nextSlide, 5000)
+      this.stopAutoplay()
+
+      if (this.slides.length > 1) {
+        this.autoplayInterval = setInterval(this.nextSlide, 5000)
+      }
     },
     stopAutoplay() {
-      clearInterval(this.autoplayInterval)
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval)
+        this.autoplayInterval = null
+      }
     },
     nextSlide() {
+      if (!this.slides.length) return
+
       this.currentSlide =
         (this.currentSlide + 1) % this.slides.length
     },
     prevSlide() {
+      if (!this.slides.length) return
+
       this.currentSlide =
         this.currentSlide === 0
           ? this.slides.length - 1
@@ -119,8 +153,7 @@ export default {
     },
     goToSlide(index) {
       this.currentSlide = index
-      this.stopAutoplay()
-      this.startAutoplay()
+      this.restartAutoplay()
     }
   }
 }

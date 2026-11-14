@@ -14,6 +14,13 @@ class FaqAdminTest extends TestCase
     public function test_guests_are_redirected_from_admin_faq_routes(): void
     {
         $this->get(route('faq.index'))->assertRedirect(route('login'));
+        $this->get(route('faq.add'))->assertRedirect(route('login'));
+        $this->get(route('faq.edit', 1))->assertRedirect(route('login'));
+        $this->get(route('faq.settings'))->assertRedirect(route('login'));
+        $this->post(route('faq.settings.update'))->assertRedirect(route('login'));
+        $this->post(route('faq.store'))->assertRedirect(route('login'));
+        $this->post(route('faq.update'))->assertRedirect(route('login'));
+        $this->get(route('faq.delete', 1))->assertRedirect(route('login'));
     }
 
     public function test_admin_can_view_faq_screens(): void

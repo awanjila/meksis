@@ -25,6 +25,16 @@ class Category extends Model
         return 'slug';
     }
 
+    public function getLftName()
+    {
+        return 'lft';
+    }
+
+    public function getRgtName()
+    {
+        return 'rgt';
+    }
+
 // Define a relationship to get the parent category.
     public function parentCategory()
     {

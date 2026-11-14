@@ -10,6 +10,7 @@ use App\Http\Controllers\BackOffice\PortfolioController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\FaqController;
+use App\Http\Controllers\Api\HomeContentController;
 use App\Models\BackOffice\Blog;
 
 
@@ -55,6 +56,9 @@ Route::get('/portfolios/category/{categorySlug}', [PortfolioController::class, '
 // Contact API route
 Route::post('/contact', [ContactController::class, 'store']);
 
+Route::post('/orders', [\App\Http\Controllers\Api\OrderController::class, 'store'])
+    ->middleware('throttle:10,1');
+
 // Services API routes
 Route::get('/services', function() {
     return \App\Models\Service::select('id', 'name', 'slug', 'description', 'image')->get();
@@ -88,6 +92,9 @@ Route::get('/blogs', function () {
 });
 
 Route::get('/faqs', [FaqController::class, 'index']);
+
+Route::get('/home-slides', [HomeContentController::class, 'slides']);
+Route::get('/about', [HomeContentController::class, 'about']);
 
 Route::get('/blog-categories', function () {
     return \App\Models\BackOffice\BlogCategory::select('id', 'name', 'slug')->get();

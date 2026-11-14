@@ -11,6 +11,9 @@
         <div class="card">
             <div class="card-body">
                 <h4 class="header-title">Index Sliders</h4>
+                @if ($homeslides->isEmpty())
+                <p class="text-muted">No slides yet — the site is showing the built-in default hero until you add one.</p>
+                @endif
                 <p class="text-muted font-13 mb-4">
                     
                 </p>
@@ -37,7 +40,7 @@
                      <tr>
                         <td>{{$key+1}}</td>
 
-                        <td><img src="{{ asset($item->home_slide)}}" style="width: 60px; height: 45px;"></td>
+                        <td><img src="{{ $item->home_slide ? asset($item->home_slide) : asset('upload/no_image.jpg') }}" style="width: 60px; height: 45px;"></td>
                         
                         <td>{{$item->title}}</td>
                         <td>{{$item->short_description}}</td>
@@ -45,7 +48,7 @@
                         <td>
 
                             <a href="{{route('edit.homeslider', $item->id)}}" class="btn btn-blue rounded-pill waves-effect waves-light"title="Edit"><i class="fa fa-pencil-alt"></i></a>
-                            <a href="{{route('delete.homeslider', $item->id)}}" class="btn btn-danger rounded-pill waves-effect waves-light" id="delete"title="Delete"><i class="fa fa-trash-alt"></i></a>
+                            <a href="{{route('delete.homeslider', $item->id)}}" class="btn btn-danger rounded-pill waves-effect waves-light delete-confirm"title="Delete"><i class="fa fa-trash-alt"></i></a>
                             
                         </td>
                         
@@ -68,7 +71,7 @@
     toastr.{{ session('alert-type') }}('{{ session('message') }}');
     @endif
 
-    $('#delete').on('click', function () {
+    $('.delete-confirm').on('click', function () {
     return confirm('Are you sure you want to delete this item?');
 });
 

@@ -33,7 +33,7 @@ export const useCartStore = defineStore('cart', {
       const existingItem = this.items.find(i => i.id === item.id);
       
       if (existingItem) {
-        existingItem.quantity += item.quantity;
+        existingItem.quantity = Math.min(99, existingItem.quantity + item.quantity);
       } else {
         this.items.push(item);
       }

@@ -7,9 +7,6 @@ use App\Models\BackOffice\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Storage;
-use App\Mail\BlogMail;
-use App\Models\Contact;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -29,10 +26,11 @@ class BlogController extends Controller
 
     public function StoreBlog(Request $request)
     {
-        $data = $this->validate($request, [
+        $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
             'author' => 'required',
+            'category' => 'required|exists:blog_categories,id',
         ]);
 
         $slug = Str::slug($request->name);
@@ -60,20 +58,13 @@ class BlogController extends Controller
             'meta_description' => $request->meta_description,
             'author' => $request->author,
             'blog_category_id' => $request->category,
-            'image' => $save_url,
+            'image' => $save_url ?? '',
         ]);
 
         $notification = [
             'message' => 'Blog ' . ($save_url ? 'with Image ' : 'without Image ') . 'has been Created Successfully',
             'alert-type' => $save_url ? 'info' : 'warning',
         ];
-
-        Contact::chunk(100, function ($contacts) use ($data, $save_url) {
-            foreach ($contacts as $contact) {
-                Mail::to($contact->email)
-                    ->queue(new BlogMail($data, $save_url, $contact->name));
-            }
-        });
 
         return redirect()->route('index.blog')->with($notification);
     }

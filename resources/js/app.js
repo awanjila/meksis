@@ -51,9 +51,11 @@ import ContactForm from './components/contact/ContactForm.vue';
 import ContactInfoCard from './components/contact/ContactInfoCard.vue';
 import WhatsAppButton from './components/WhatsAppButton.vue';
 import AddToCart from './components/shop/AddToCart.vue';
-import Cart from './components/shop/Cart.vue';
-import Checkout from './components/shop/Checkout.vue';
-import CartToggle from './components/shop/CartToggle.vue';
+import CartPage from './components/shop/CartPage.vue';
+import CartLink from './components/shop/CartLink.vue';
+import CheckoutPage from './components/shop/CheckoutPage.vue';
+import ProductCard from './components/shop/ProductCard.vue';
+import ShopTrustBar from './components/shop/ShopTrustBar.vue';
 import { VueRecaptcha } from 'vue-recaptcha';
 import GoogleLoginButton from './components/auth/GoogleLoginButton.vue';
 import Header from './components/layout/Header.vue';
@@ -103,21 +105,8 @@ library.add(
 // Create Pinia store instance
 const pinia = createPinia();
 
-// Create a Vue application instance with data
-const app = createApp({
-  data() {
-    return {
-      showCart: false,
-      showCheckout: false
-    };
-  },
-  methods: {
-    toggleCart() {
-      console.log('Toggle cart method called');
-      this.showCart = !this.showCart;
-    }
-  }
-});
+// Create a Vue application instance
+const app = createApp({});
 
 // Register Font Awesome icon component globally
 app.component('font-awesome-icon', FontAwesomeIcon);
@@ -131,9 +120,11 @@ app.component('contact-info-card', ContactInfoCard);
 app.component('vue-recaptcha', VueRecaptcha);
 app.component('whatsapp-button', WhatsAppButton);
 app.component('add-to-cart', AddToCart);
-app.component('shopping-cart', Cart);
-app.component('checkout', Checkout);
-app.component('cart-toggle', CartToggle);
+app.component('product-card', ProductCard);
+app.component('shop-trust-bar', ShopTrustBar);
+app.component('cart-page', CartPage);
+app.component('cart-link', CartLink);
+app.component('checkout-page', CheckoutPage);
 app.component('google-login-button', GoogleLoginButton);
 app.component('header-component', Header);
 app.component('footer-component', Footer);

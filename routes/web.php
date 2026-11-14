@@ -10,8 +10,10 @@ use App\Http\Controllers\BackOffice\PortfolioController;
 use App\Http\Controllers\BackOffice\CategoryController;
 use App\Http\Controllers\BackOffice\BlogController;
 use App\Http\Controllers\BackOffice\FaqController;
+use App\Http\Controllers\BackOffice\OrderController as BackOfficeOrderController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CustomerAuthController;
@@ -64,30 +66,28 @@ Route::controller(ContactController::class)->group(function(){
 
 
 
-Route::get('home/slider', [AdminController::class, 'HomeSlider'])->name('home.slider');
-Route::get('index/slider', [AdminController::class, 'IndexOfHomeSlider'])->name('index.slider');
-Route::post('store/slider', [AdminController::class, 'StoreSlider'])->name('store.slider');
-Route::post('update/slider', [AdminController::class, 'UpdateSlider'])->name('update.slider');
-Route::get('edit/slider/{id}', [AdminController::class, 'EditSlider'])->name('edit.homeslider');
-Route::get('delete/slider/{id}', [AdminController::class, 'DeleteSlider'])->name('delete.homeslider');
-Route::get('admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('home/slider', [AdminController::class, 'HomeSlider'])->name('home.slider');
+    Route::get('index/slider', [AdminController::class, 'IndexOfHomeSlider'])->name('index.slider');
+    Route::post('store/slider', [AdminController::class, 'StoreSlider'])->name('store.slider');
+    Route::post('update/slider', [AdminController::class, 'UpdateSlider'])->name('update.slider');
+    Route::get('edit/slider/{id}', [AdminController::class, 'EditSlider'])->name('edit.homeslider');
+    Route::get('delete/slider/{id}', [AdminController::class, 'DeleteSlider'])->name('delete.homeslider');
+    Route::get('admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
+});
 
 
-// })->middleware(['auth', 'verified']);
 
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('update/about/page', [AboutController::class, 'UpdateAbout'])->name('update.about');
+    Route::get('edit/about/page', [AboutController::class, 'AboutPage'])->name('edit.about.page');
+});
 
-
-Route::controller(AboutController::class)->group(function(){
-Route::post('update/about/page', 'UpdateAbout')->name('update.about');
-Route::get('edit/about/page', 'AboutPage')->name('edit.about.page');
-
-   //frontend
-Route::get('about', 'About')->name('about');
-Route::get('pricing_and_packages', 'Pricing')->name('pricing');
-    
- });
-
-// })->middleware(['auth', 'verified']);
+Route::controller(AboutController::class)->group(function () {
+    //frontend
+    Route::get('about', 'About')->name('about');
+    Route::get('pricing_and_packages', 'Pricing')->name('pricing');
+});
 
 Route::controller(FaqController::class)->group(function () {
     Route::get('faqs', 'FaqPage')->name('faqs.index');
@@ -199,12 +199,14 @@ Route::controller(CatalogController::class)->group(function(){
     Route::get('/category/{slug}', 'showProducts')->name('category.products');
     Route::get('/brand/{slug}', 'showBrandProducts')->name('brand.products');
     Route::get('show/product-1/{slug}', 'show')->name('show.product');
-    Route::get('show/cart', 'showCart')->name('show.cart');
+    Route::get('cart', 'showCart')->name('show.cart');
     Route::get('checkout', 'checkout')->name('show.checkout');
     Route::get('search', 'searchProducts')->name('search');
     Route::post('/checkout/invoice', 'CheckoutInvoice')->name('checkout.invoice');
 
     Route::get('/products/{slug}', 'showByCategory')->name('products.byCategory');
+
+    Route::get('/order/{reference}', [OrderController::class, 'show'])->name('order.show');
 
 
     Route::get('/delivery', 'Delivery')->name('delivery');
@@ -236,6 +238,12 @@ Route::controller(ProductController::class)->group(function(){
 
 
 })->middleware(['auth', 'verified']);
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('orders', [BackOfficeOrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [BackOfficeOrderController::class, 'show'])->name('orders.show');
+    Route::post('orders/{order}/status', [BackOfficeOrderController::class, 'updateStatus'])->name('orders.status');
+});
 
 //All Category Route
 Route::controller(CategoryController::class)->group(function(){

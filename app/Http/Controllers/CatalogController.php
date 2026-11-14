@@ -5,16 +5,41 @@ use App\Models\Category;
 use App\Models\Product;
 
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 
-class Catalogcontroller extends Controller
+class CatalogController extends Controller
 {
-    
+
+    public function index(): View
+    {
+        $products = Product::with('category')
+            ->latest()
+            ->get()
+            ->filter(fn (Product $product) => $product->isOrderable())
+            ->values();
+
+        $categories = Category::orderBy('category_name')->get();
+
+        return view('client.shop.index', compact('products', 'categories'));
+    }
+
+    public function showProducts(string $slug): View
+    {
+        return $this->showByCategory($slug);
+    }
+
     public function showByCategory($slug)
 {
     $category = Category::where('slug', $slug)->firstOrFail();
-    $items = Product::where('category_id', $category->id)->get();
+    $items = Product::with('category')
+        ->where('category_id', $category->id)
+        ->get()
+        ->filter(fn (Product $product) => $product->isOrderable())
+        ->values();
 
-    return view('client.shop.category_product_list', compact('category', 'items'));
+    $categories = Category::orderBy('category_name')->get();
+
+    return view('client.shop.category_product_list', compact('category', 'categories', 'items'));
 }//endmethod
 
 
@@ -22,14 +47,29 @@ public function show($slug)
 {
     $product = Product::where('slug', $slug)->firstOrFail();
 
+    abort_unless($product->isOrderable(), 404);
+
       // Retrieve the category associated with the product
     $category = $product->category;
 
-    $products = Product::where('category_id', $category->id)
+    $products = Product::with('category')
+                        ->where('category_id', $category->id)
                         ->where('id', '!=', $product->id)
-                        ->get();
+                        ->get()
+                        ->filter(fn (Product $item) => $item->isOrderable())
+                        ->values();
 
 
     return view('client.shop.shop_product', compact('product', 'products'));
 }//endmethod
+
+    public function showCart(): View
+    {
+        return view('client.shop.cart');
+    }
+
+    public function checkout(): View
+    {
+        return view('client.shop.checkout');
+    }
 }

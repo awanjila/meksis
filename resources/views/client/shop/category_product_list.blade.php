@@ -1,87 +1,49 @@
-
 @extends('client.layout.app')
 @section('title')
-Meksis Engineering | Advanced Security Solutions  
+{{ $category->category_name }} | Meksis Engineering
 @endsection
 
 @section('meta_title')
-Categories | Shop Wabe Digital Agency   
+{{ $category->category_name }} | Shop Meksis Engineering
 @endsection
 
 @section('meta_description')
-Boost your online presence with expert Website Design, efficient Point Of Sale systems, robust Ecommerce solutions, innovative Web Design, and secure Biometric Attendance systems. Enhance functionality and user experience.
+Browse {{ $category->category_name }} products from Meksis Engineering and add them to your cart.
 @endsection
 @section('content')
-        <div class="main-content">
-         
-            <!-- Breadcrumbs Start -->
-            <div class="rs-breadcrumbs img3">
-                <div class="breadcrumbs-inner text-center">
-                    <h1 class="page-title">Shop {{ $category->category_name }}</h1>
-                    <ul>
-                        <li title="Braintech - IT Solutions and Technology Startup HTML Template">
-                            <a class="active" href="/">Home</a>
-                        </li>
-                        <li>{{ $category->category_name }}</li>
-                    </ul>
+
+<section class="shop-section">
+    <div class="shop-container">
+        <div class="shop-header">
+            <h1 class="shop-title">{{ $category->category_name }}</h1>
+            <p class="shop-subtitle">Browse {{ $category->category_name }} products and add what you need to your cart</p>
+        </div>
+
+        <div class="shop-filters">
+            <a href="/store" class="shop-filter">All</a>
+            @foreach($categories as $cat)
+                <a href="{{ route('category.products', $cat->slug) }}" class="shop-filter {{ $cat->id === $category->id ? 'active' : '' }}">{{ $cat->category_name }}</a>
+            @endforeach
+        </div>
+
+        <p class="shop-count">{{ $items->count() }} {{ \Illuminate\Support\Str::plural('product', $items->count()) }} available</p>
+
+        <div class="shop-grid">
+            @forelse($items as $product)
+                <product-card :product='@json($product)'></product-card>
+            @empty
+                <div class="shop-empty">
+                    <p>No products are available in this category yet.</p>
+                    <a class="shop-empty-cta" target="_blank" rel="noopener" href="https://wa.me/254735551515?text={{ urlencode("Hi Meksis, I'm looking for " . $category->category_name . " products") }}">Ask us on WhatsApp</a>
                 </div>
-            </div>
-            <!-- Breadcrumbs End -->
+            @endforelse
+        </div>
 
-            <!--Shop part start-->
-            <div class="rs-shop-part pt-120 pb-120 md-pt-70 md-pb-80">
-                <div class="container">
-                   	<div class="row align-items-center rs-vertical-middle shorting mb-50">
-                   	    <div class="col-sm-6 col-12">
-                   	        <p class="woocommerce-result-count">Showing 1-9 of 12 results</p>
-                   	    </div>
-                   	    <div class="col-sm-6 col-12 sm-mt-20">
-                   	        <select class="from-control">
-                   	            <option>Default sorting</option>
-                   	            <option>Sort by popularity</option>
-                   	            <option>Sort by average rating</option>
-                   	            <option>Sort by lates</option>
-                   	            <option>Sort by price: low to high</option>
-                   	            <option>Sort by price: high to low</option>
-                   	        </select>
-                   	    </div>
-                   	</div>
-                   	<div class="row">
+        <shop-trust-bar></shop-trust-bar>
+    </div>
+</section>
 
-                       @foreach($items as $p)
-                   	    <div class="col-lg-4 col-md-6 mb-80">
-                   	        <div class="product-list">
-                   	            <div class="image-product">
-                                   <img src="{{ asset($p->product_image) }}" alt="{{ $p->product_name }}">
-                   	                <div class="overley">
-                   	                    <a href="shop-single.html"><i class="flaticon-shopping-bag"></i></a>
-                   	                </div>
-                   	            </div>
-                   	            <div class="content-desc text-center">
-                   	                <h2 class="loop-product-title pt-15"><a href="{{ route('show.product',$p->slug) }}">{{ $p->product_name }}</a></h2>
-                   	                <span class="price">Ksh {{ $p->selling_price }}.00</span>
-                   	            </div>
-                   	        </div>
-                   	    </div>
-
-                        @endforeach
-                   	    
-                   	    
+<faqs-section></faqs-section>
 
 
-                   	     <div class="col-lg-12 text-center pt-40">
-                   	         <ul class="pagination-part">
-                   	             <li class="active"><a href="#">1</a></li>
-                   	             <li><a href="#">2</a></li>
-                   	             <li><a class="next-page" href="#">Next</a></li>
-                   	         </ul> 
-                   	     </div>
-                   	</div>
-                </div>
-            </div>
-            <!--Shop part end-->
-        </div> 
-        <!-- Main content End -->
-
-        @endsection
-     
+@endsection

@@ -5,6 +5,8 @@
      <AboutSection />
     <BlogSection />
     <FaqsSection />
+    <ContactSection />
+    <ServiceAreasSection />
   </div>
 </template>
 
@@ -15,7 +17,8 @@ import ServicesSection from '@/components/ServicesSection.vue'
 import AboutSection from '@/components/AboutSection.vue'
 import BlogSection from '@/components/BlogSection.vue'
 import FaqsSection from '@/components/FaqsSection.vue'
-import { faHotTubPerson } from '@fortawesome/free-solid-svg-icons'
+import ContactSection from '@/components/ContactSection.vue'
+import ServiceAreasSection from '@/components/ServiceAreasSection.vue'
 </script>
 
 <style scoped>
