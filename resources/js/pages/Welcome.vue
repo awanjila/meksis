@@ -6,6 +6,7 @@
     <BlogSection />
     <FaqsSection />
     <ContactSection />
+    <ServiceAreasSection />
   </div>
 </template>
 
@@ -17,6 +18,7 @@ import AboutSection from '@/components/AboutSection.vue'
 import BlogSection from '@/components/BlogSection.vue'
 import FaqsSection from '@/components/FaqsSection.vue'
 import ContactSection from '@/components/ContactSection.vue'
+import ServiceAreasSection from '@/components/ServiceAreasSection.vue'
 </script>
 
 <style scoped>
