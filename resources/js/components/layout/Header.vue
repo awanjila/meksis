@@ -59,6 +59,7 @@
           <nav class="desktop-nav">
             <a href="/" class="nav-link">HOME</a>
             <a href="/about" class="nav-link">ABOUT US</a>
+            <a href="/store" class="nav-link">SHOP</a>
 
             <!-- Products Dropdown -->
             <div class="products-dropdown">
@@ -85,6 +86,8 @@
             <a href="/faqs" class="nav-link">FAQS</a>
             <a href="/contact" class="nav-link">CONTACT</a>
           </nav>
+
+          <cart-link></cart-link>
 
           <!-- Mobile Menu Toggle -->
           <button class="mobile-menu-toggle" @click="mobileMenuOpen = !mobileMenuOpen" aria-label="Toggle menu">
@@ -135,6 +138,8 @@
           <a href="/blogs" class="mobile-nav-link">BLOG</a>
           <a href="/faqs" class="mobile-nav-link">FAQS</a>
           <a href="/contact" class="mobile-nav-link">CONTACT</a>
+          <a href="/store" class="mobile-nav-link">SHOP</a>
+          <a href="/cart" class="mobile-nav-link">CART</a>
 
           <!-- Mobile CTA Buttons -->
           <div class="mobile-cta-buttons">
@@ -530,6 +535,37 @@ export default {
 
 .nav-link:hover {
   color: var(--royal-yellow);
+}
+
+/* Cart Link */
+.cart-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: var(--white);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.cart-link:hover {
+  color: var(--royal-yellow);
+}
+
+.cart-count {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: var(--royal-yellow);
+  color: var(--charcoal);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
 }
 
 /* Products Dropdown */

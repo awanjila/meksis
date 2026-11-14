@@ -95,6 +95,13 @@ class ShopCatalogueTest extends TestCase
             ->assertDontSee('Free Tank');
     }
 
+    public function test_cart_page_renders_the_cart_component(): void
+    {
+        $this->get('/cart')
+            ->assertOk()
+            ->assertSee('cart-page', false);
+    }
+
     public function test_product_exposes_an_absolute_image_url_and_orderable_flag(): void
     {
         $product = $this->product();

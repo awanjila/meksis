@@ -55,4 +55,9 @@ public function show($slug)
 
     return view('client.shop.shop_product', compact('product', 'products'));
 }//endmethod
+
+    public function showCart(): View
+    {
+        return view('client.shop.cart');
+    }
 }

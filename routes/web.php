@@ -197,7 +197,7 @@ Route::controller(CatalogController::class)->group(function(){
     Route::get('/category/{slug}', 'showProducts')->name('category.products');
     Route::get('/brand/{slug}', 'showBrandProducts')->name('brand.products');
     Route::get('show/product-1/{slug}', 'show')->name('show.product');
-    Route::get('show/cart', 'showCart')->name('show.cart');
+    Route::get('cart', 'showCart')->name('show.cart');
     Route::get('checkout', 'checkout')->name('show.checkout');
     Route::get('search', 'searchProducts')->name('search');
     Route::post('/checkout/invoice', 'CheckoutInvoice')->name('checkout.invoice');
