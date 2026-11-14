@@ -5,6 +5,7 @@ namespace App\Http\Controllers\BackOffice;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
@@ -167,23 +168,25 @@ class ProductController extends Controller
 
 
 public function DeleteProduct($id){
-    $product = Product::findOrFail($id);
+    return DB::transaction(function () use ($id) {
+        $product = Product::lockForUpdate()->findOrFail($id);
 
-    if (\App\Models\OrderItem::where('product_id', $product->id)->exists()) {
-        return redirect()->back()->with([
-            'message' => 'This product appears in an order and cannot be deleted. Set its stock to 0 instead.',
-            'alert-type' => 'warning',
-        ]);
-    }
+        if (\App\Models\OrderItem::where('product_id', $product->id)->exists()) {
+            return redirect()->back()->with([
+                'message' => 'This product appears in an order and cannot be deleted. Set its stock to 0 instead.',
+                'alert-type' => 'warning',
+            ]);
+        }
 
-    $product->delete();
+        $product->delete();
 
-    $notification = array(
-        'message' => 'Product Deleted Successfully',
-        'alert-type' => 'warning'
-    );
+        $notification = array(
+            'message' => 'Product Deleted Successfully',
+            'alert-type' => 'warning'
+        );
 
-    return redirect()->back()->with($notification);
+        return redirect()->back()->with($notification);
+    });
 }
 
 public function BarCodeProduct($id){
