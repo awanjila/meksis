@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -51,7 +52,8 @@ class AdminController extends Controller
         if ($request->file('home_slide')) {
             $image = $request->file('home_slide');
             $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            Image::make($image)->resize(1700, 700)->save('upload/home_slide/' . $name_gen);
+            File::ensureDirectoryExists(public_path('upload/home_slide'));
+            Image::make($image)->resize(1700, 700)->save(public_path('upload/home_slide/' . $name_gen));
             $save_url = 'upload/home_slide/' . $name_gen;
             $home_slider = new HomeSlider();
             $home_slider->title = $request->title;
@@ -107,7 +109,8 @@ class AdminController extends Controller
 
             $image = $request->file('home_slide');
              $name_gen = hexdec(uniqid()) . '.' . $image->getClientOriginalExtension();
-            Image::make($image)->resize(1700, 700)->save('upload/home_slide/' . $name_gen);
+            File::ensureDirectoryExists(public_path('upload/home_slide'));
+            Image::make($image)->resize(1700, 700)->save(public_path('upload/home_slide/' . $name_gen));
 
              $save_url = 'upload/home_slide/' . $name_gen;
 
@@ -127,7 +130,7 @@ class AdminController extends Controller
             return redirect()->route('index.slider')->with($notification);
 
         } else{
-            Customer::findOrfail($customer_id)->update([
+            HomeSlider::findOrfail($homeslider_id)->update([
                 'title'=> $request->title,
                 'short_description'=> $request->short_title,
                 'video_url'=> $request->video_url,

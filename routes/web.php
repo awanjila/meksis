@@ -64,16 +64,15 @@ Route::controller(ContactController::class)->group(function(){
 
 
 
-Route::get('home/slider', [AdminController::class, 'HomeSlider'])->name('home.slider');
-Route::get('index/slider', [AdminController::class, 'IndexOfHomeSlider'])->name('index.slider');
-Route::post('store/slider', [AdminController::class, 'StoreSlider'])->name('store.slider');
-Route::post('update/slider', [AdminController::class, 'UpdateSlider'])->name('update.slider');
-Route::get('edit/slider/{id}', [AdminController::class, 'EditSlider'])->name('edit.homeslider');
-Route::get('delete/slider/{id}', [AdminController::class, 'DeleteSlider'])->name('delete.homeslider');
-Route::get('admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
-
-
-// })->middleware(['auth', 'verified']);
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('home/slider', [AdminController::class, 'HomeSlider'])->name('home.slider');
+    Route::get('index/slider', [AdminController::class, 'IndexOfHomeSlider'])->name('index.slider');
+    Route::post('store/slider', [AdminController::class, 'StoreSlider'])->name('store.slider');
+    Route::post('update/slider', [AdminController::class, 'UpdateSlider'])->name('update.slider');
+    Route::get('edit/slider/{id}', [AdminController::class, 'EditSlider'])->name('edit.homeslider');
+    Route::get('delete/slider/{id}', [AdminController::class, 'DeleteSlider'])->name('delete.homeslider');
+    Route::get('admin/logout', [AdminController::class, 'destroy'])->name('admin.logout');
+});
 
 
 
