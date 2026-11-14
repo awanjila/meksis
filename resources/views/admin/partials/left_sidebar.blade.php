@@ -44,13 +44,13 @@
                <li>
                     <a href="#about" data-bs-toggle="collapse">
                         <i class="mdi mdi-text-box-multiple-outline"></i>
-                        <span> ABOUT PAGE </span>
+                        <span> ABOUT &amp; HOMEPAGE </span>
                         <span class="menu-arrow"></span>
                     </a>
                     <div class="collapse" id="about">
                         <ul class="nav-second-level">
                             <li>
-                                <a href="{{ route('edit.about.page') }}">About Content</a>
+                                <a href="{{ route('edit.about.page') }}">About &amp; Homepage Content</a>
                             </li>
                             
                         </ul>

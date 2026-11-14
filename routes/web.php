@@ -77,17 +77,16 @@ Route::get('admin/logout', [AdminController::class, 'destroy'])->name('admin.log
 
 
 
-Route::controller(AboutController::class)->group(function(){
-Route::post('update/about/page', 'UpdateAbout')->name('update.about');
-Route::get('edit/about/page', 'AboutPage')->name('edit.about.page');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::post('update/about/page', [AboutController::class, 'UpdateAbout'])->name('update.about');
+    Route::get('edit/about/page', [AboutController::class, 'AboutPage'])->name('edit.about.page');
+});
 
-   //frontend
-Route::get('about', 'About')->name('about');
-Route::get('pricing_and_packages', 'Pricing')->name('pricing');
-    
- });
-
-// })->middleware(['auth', 'verified']);
+Route::controller(AboutController::class)->group(function () {
+    //frontend
+    Route::get('about', 'About')->name('about');
+    Route::get('pricing_and_packages', 'Pricing')->name('pricing');
+});
 
 Route::controller(FaqController::class)->group(function () {
     Route::get('faqs', 'FaqPage')->name('faqs.index');
