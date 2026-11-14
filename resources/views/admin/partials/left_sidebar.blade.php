@@ -211,7 +211,7 @@
     <li>
        <a href="#product" data-bs-toggle="collapse">
        <i class="fa fa-briefcase "></i>
-      
+       <span> Product Management </span>
        <span class="menu-arrow"></span>
        </a>
        <div class="collapse" id="product">
