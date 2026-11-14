@@ -104,21 +104,8 @@ library.add(
 // Create Pinia store instance
 const pinia = createPinia();
 
-// Create a Vue application instance with data
-const app = createApp({
-  data() {
-    return {
-      showCart: false,
-      showCheckout: false
-    };
-  },
-  methods: {
-    toggleCart() {
-      console.log('Toggle cart method called');
-      this.showCart = !this.showCart;
-    }
-  }
-});
+// Create a Vue application instance
+const app = createApp({});
 
 // Register Font Awesome icon component globally
 app.component('font-awesome-icon', FontAwesomeIcon);

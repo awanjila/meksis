@@ -25,7 +25,7 @@
           <div class="quantity-control">
             <button type="button" :disabled="item.quantity <= 1" @click="updateQuantity(item.id, item.quantity - 1)">-</button>
             <span>{{ item.quantity }}</span>
-            <button type="button" @click="updateQuantity(item.id, item.quantity + 1)">+</button>
+            <button type="button" @click="updateQuantity(item.id, Math.min(99, item.quantity + 1))">+</button>
           </div>
           <span class="cart-line-total">Ksh {{ item.price * item.quantity }}</span>
           <button type="button" class="remove-btn" aria-label="Remove item" @click="removeFromCart(item.id)">

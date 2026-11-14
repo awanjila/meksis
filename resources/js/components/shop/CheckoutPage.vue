@@ -3,8 +3,8 @@
     <div v-if="cartItems.length > 0" class="checkout-content">
       <div v-if="errorMessage" class="checkout-alert">
         <p>{{ errorMessage }}</p>
-        <ul v-if="itemErrors.length">
-          <li v-for="message in itemErrors" :key="message">{{ message }}</li>
+        <ul v-if="validationErrors.length">
+          <li v-for="message in validationErrors" :key="message">{{ message }}</li>
         </ul>
         <a v-if="showCartLink" href="/cart" class="alert-link">Return to your cart</a>
       </div>
@@ -95,7 +95,7 @@ export default {
 
     const isSubmitting = ref(false);
     const errorMessage = ref('');
-    const itemErrors = ref([]);
+    const validationErrors = ref([]);
     const showCartLink = ref(false);
 
     const submit = async () => {
@@ -105,7 +105,7 @@ export default {
 
       isSubmitting.value = true;
       errorMessage.value = '';
-      itemErrors.value = [];
+      validationErrors.value = [];
       showCartLink.value = false;
 
       try {
@@ -121,9 +121,11 @@ export default {
         isSubmitting.value = false;
 
         if (error.response?.status === 422) {
+          const errors = error.response.data.errors || {};
+
           errorMessage.value = error.response.data.message || 'Please check your details and try again.';
-          itemErrors.value = error.response.data.errors?.items || [];
-          showCartLink.value = true;
+          validationErrors.value = Object.values(errors).flat();
+          showCartLink.value = Boolean(errors.items);
         } else {
           errorMessage.value = 'We could not place your order. Please try again.';
         }
@@ -134,7 +136,7 @@ export default {
       form,
       isSubmitting,
       errorMessage,
-      itemErrors,
+      validationErrors,
       showCartLink,
       submit,
       cartItems: computed(() => cartStore.cartItems),

@@ -95,6 +95,22 @@ class ShopCatalogueTest extends TestCase
             ->assertDontSee('Free Tank');
     }
 
+    public function test_product_detail_for_a_non_orderable_product_returns_not_found(): void
+    {
+        $this->product(['product_name' => 'Free Tank', 'slug' => 'free-tank', 'selling_price' => '0']);
+
+        $this->get('/show/product-1/free-tank')->assertNotFound();
+    }
+
+    public function test_quantity_controls_are_capped_at_99(): void
+    {
+        $cartPage = file_get_contents(base_path('resources/js/components/shop/CartPage.vue'));
+        $addToCart = file_get_contents(base_path('resources/js/components/shop/AddToCart.vue'));
+
+        $this->assertStringContainsString('Math.min(99,', $cartPage);
+        $this->assertStringContainsString('Math.min(99,', $addToCart);
+    }
+
     public function test_cart_page_renders_the_cart_component(): void
     {
         $this->get('/cart')

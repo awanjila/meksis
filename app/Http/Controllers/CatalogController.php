@@ -43,6 +43,8 @@ public function show($slug)
 {
     $product = Product::where('slug', $slug)->firstOrFail();
 
+    abort_unless($product->isOrderable(), 404);
+
       // Retrieve the category associated with the product
     $category = $product->category;
 

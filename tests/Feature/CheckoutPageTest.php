@@ -24,6 +24,14 @@ class CheckoutPageTest extends TestCase
         $this->assertStringContainsString('website: form.website', $component);
     }
 
+    public function test_checkout_component_lists_every_validation_error(): void
+    {
+        $component = file_get_contents(base_path('resources/js/components/shop/CheckoutPage.vue'));
+
+        $this->assertStringContainsString('Object.values(', $component);
+        $this->assertStringContainsString('.flat()', $component);
+    }
+
     public function test_confirmation_page_shows_the_order_by_reference(): void
     {
         $order = Order::create([

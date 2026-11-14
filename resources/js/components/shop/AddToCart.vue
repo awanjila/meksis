@@ -33,11 +33,11 @@ export default {
     const quantity = ref(1);
 
     const validateQuantity = () => {
-      if (quantity.value < 1) quantity.value = 1;
+      quantity.value = Math.min(99, Math.max(1, Number(quantity.value) || 1));
     };
 
     const increaseQuantity = () => {
-      quantity.value++;
+      quantity.value = Math.min(99, quantity.value + 1);
     };
 
     const decreaseQuantity = () => {
