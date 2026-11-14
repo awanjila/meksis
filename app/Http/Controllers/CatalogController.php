@@ -60,4 +60,9 @@ public function show($slug)
     {
         return view('client.shop.cart');
     }
+
+    public function checkout(): View
+    {
+        return view('client.shop.checkout');
+    }
 }

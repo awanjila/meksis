@@ -12,6 +12,7 @@ use App\Http\Controllers\BackOffice\BlogController;
 use App\Http\Controllers\BackOffice\FaqController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\CatalogController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\CustomerAuthController;
@@ -203,6 +204,8 @@ Route::controller(CatalogController::class)->group(function(){
     Route::post('/checkout/invoice', 'CheckoutInvoice')->name('checkout.invoice');
 
     Route::get('/products/{slug}', 'showByCategory')->name('products.byCategory');
+
+    Route::get('/order/{reference}', [OrderController::class, 'show'])->name('order.show');
 
 
     Route::get('/delivery', 'Delivery')->name('delivery');

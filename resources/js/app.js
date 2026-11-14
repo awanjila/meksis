@@ -53,7 +53,7 @@ import WhatsAppButton from './components/WhatsAppButton.vue';
 import AddToCart from './components/shop/AddToCart.vue';
 import CartPage from './components/shop/CartPage.vue';
 import CartLink from './components/shop/CartLink.vue';
-// CheckoutPage is added in Task 4
+import CheckoutPage from './components/shop/CheckoutPage.vue';
 import ProductCard from './components/shop/ProductCard.vue';
 import { VueRecaptcha } from 'vue-recaptcha';
 import GoogleLoginButton from './components/auth/GoogleLoginButton.vue';
@@ -135,6 +135,7 @@ app.component('add-to-cart', AddToCart);
 app.component('product-card', ProductCard);
 app.component('cart-page', CartPage);
 app.component('cart-link', CartLink);
+app.component('checkout-page', CheckoutPage);
 app.component('google-login-button', GoogleLoginButton);
 app.component('header-component', Header);
 app.component('footer-component', Footer);
