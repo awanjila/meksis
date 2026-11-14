@@ -6,40 +6,38 @@
         <div class="about-image-wrapper">
           <div class="image-container">
             <img 
-              src="/images/about/tank-factory.jpeg" 
+              :src="content.image" 
               alt="Meksis Engineering Steel Tank Manufacturing" 
               class="about-image"
             />
             
             <!-- Stats Badge -->
             <div class="stats-badge">
-              <div class="stat-item">
-                <div class="stat-number">15+</div>
-                <div class="stat-label">YEARS EXPERIENCE</div>
-              </div>
-              <div class="stat-divider"></div>
-              <div class="stat-item">
-                <div class="stat-number">1000+</div>
-                <div class="stat-label">HAPPY CLIENTS</div>
-              </div>
+              <template v-for="(stat, index) in content.stats" :key="index">
+                <div v-if="index > 0" class="stat-divider"></div>
+                <div class="stat-item">
+                  <div class="stat-number">{{ stat.number }}</div>
+                  <div class="stat-label">{{ stat.label }}</div>
+                </div>
+              </template>
             </div>
           </div>
         </div>
 
         <!-- Right Side: Content -->
         <div class="about-text-wrapper">
-          <div class="section-label">ABOUT MEKSIS ENGINEERING</div>
+          <div class="section-label">{{ content.section_label }}</div>
           <h2 class="section-title">
-            PREMIUM STEEL TANK
-            <span class="highlight">SOLUTIONS</span>
+            {{ content.headline }}
+            <span class="highlight">{{ content.highlight_word }}</span>
           </h2>
           
           <p class="about-description">
-            Meksis Engineering prides itself as one of the most prominent fabricator, supplier and installer of pressed steel tanks & GRP Tanks in Kenya. We also do general steel fabrication.
+            {{ content.paragraph_one }}
           </p>
 
           <p class="about-description">
-            Established in 2010, we specialize in manufacturing high-quality elevated pressed steel tanks, galvanized steel tanks, and GRP water tanks for industrial, commercial, and residential applications across Kenya and East Africa.
+            {{ content.paragraph_two }}
           </p>
       
           <div class="cta-buttons">
@@ -59,6 +57,40 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
+
+const defaultContent = {
+  section_label: 'ABOUT MEKSIS ENGINEERING',
+  headline: 'PREMIUM STEEL TANK',
+  highlight_word: 'SOLUTIONS',
+  paragraph_one: 'Meksis Engineering prides itself as one of the most prominent fabricator, supplier and installer of pressed steel tanks & GRP Tanks in Kenya. We also do general steel fabrication.',
+  paragraph_two: 'Established in 2010, we specialize in manufacturing high-quality elevated pressed steel tanks, galvanized steel tanks, and GRP water tanks for industrial, commercial, and residential applications across Kenya and East Africa.',
+  image: '/images/about/tank-factory.jpeg',
+  stats: [
+    { number: '15+', label: 'YEARS EXPERIENCE' },
+    { number: '1000+', label: 'HAPPY CLIENTS' }
+  ]
+}
+
+const content = ref(defaultContent)
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/about')
+    if (!res.ok) throw new Error('Unable to load about content')
+
+    const data = await res.json()
+
+    content.value = {
+      ...defaultContent,
+      ...data,
+      image: data.image || defaultContent.image,
+      stats: Array.isArray(data.stats) && data.stats.length ? data.stats : defaultContent.stats
+    }
+  } catch (error) {
+    console.error('Error fetching about content:', error)
+  }
+})
 </script>
 
 <style scoped>
