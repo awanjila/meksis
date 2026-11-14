@@ -12,7 +12,8 @@ class CatalogController extends Controller
 
     public function index(): View
     {
-        $products = Product::latest()
+        $products = Product::with('category')
+            ->latest()
             ->get()
             ->filter(fn (Product $product) => $product->isOrderable())
             ->values();
@@ -30,7 +31,8 @@ class CatalogController extends Controller
     public function showByCategory($slug)
 {
     $category = Category::where('slug', $slug)->firstOrFail();
-    $items = Product::where('category_id', $category->id)
+    $items = Product::with('category')
+        ->where('category_id', $category->id)
         ->get()
         ->filter(fn (Product $product) => $product->isOrderable())
         ->values();
@@ -50,7 +52,8 @@ public function show($slug)
       // Retrieve the category associated with the product
     $category = $product->category;
 
-    $products = Product::where('category_id', $category->id)
+    $products = Product::with('category')
+                        ->where('category_id', $category->id)
                         ->where('id', '!=', $product->id)
                         ->get()
                         ->filter(fn (Product $item) => $item->isOrderable())

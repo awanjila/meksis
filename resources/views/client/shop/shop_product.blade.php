@@ -15,7 +15,13 @@
 <section class="pd-section">
     <div class="pd-container">
         <nav class="pd-breadcrumb" aria-label="Breadcrumb">
-            <a href="/">Home</a> / <a href="/store">Shop</a> / <a href="{{ route('category.products', $product->category->slug) }}">{{ $product->category->category_name }}</a> / <span>{{ $product->product_name }}</span>
+            <a href="/">Home</a>
+            <span>/</span>
+            <a href="/store">Shop</a>
+            <span>/</span>
+            <a href="{{ route('category.products', $product->category->slug) }}">{{ $product->category->category_name }}</a>
+            <span>/</span>
+            <strong>{{ $product->product_name }}</strong>
         </nav>
 
         <div class="pd-main">
@@ -24,28 +30,41 @@
             </div>
 
             <div class="pd-info">
-                <span class="pd-category">{{ $product->category->category_name }}</span>
+                <p class="pd-category">{{ $product->category->category_name }}</p>
                 <h1 class="pd-title">{{ $product->product_name }}</h1>
-                <p class="pd-price">Ksh {{ $product->selling_price }}</p>
 
-                @if($product->product_features)
-                    <div class="pd-features">{!! $product->product_features !!}</div>
+                @if($product->isOrderable())
+                    <p class="pd-availability">Available to order</p>
                 @endif
+
+                <p class="pd-price">Ksh {{ $product->selling_price }}</p>
 
                 @if($product->isOrderable())
                     <add-to-cart :product='@json($product)'></add-to-cart>
                 @endif
+
+                <a class="pd-whatsapp" target="_blank" rel="noopener"
+                   href="https://wa.me/254735551515?text={{ urlencode("Hi Meksis, I'm interested in " . $product->product_name) }}">
+                    Ask on WhatsApp
+                </a>
+
+                @if($product->product_features)
+                    <div class="pd-features">
+                        <h2 class="pd-heading">Key features</h2>
+                        <div class="pd-body">{!! $product->product_features !!}</div>
+                    </div>
+                @endif
             </div>
         </div>
 
-        <div class="pd-description">
-            <h2 class="pd-heading">DESCRIPTION</h2>
+        <div class="pd-block">
+            <h2 class="pd-heading">Description</h2>
             <div class="pd-body">{!! $product->product_description !!}</div>
         </div>
 
         @if($products->isNotEmpty())
-            <div class="pd-related">
-                <h2 class="pd-heading">RELATED PRODUCTS</h2>
+            <div class="pd-block">
+                <h2 class="pd-heading">Related products</h2>
                 <div class="pd-grid">
                     @foreach($products as $item)
                         <product-card :product='@json($item)'></product-card>
@@ -53,6 +72,8 @@
                 </div>
             </div>
         @endif
+
+        <shop-trust-bar></shop-trust-bar>
     </div>
 </section>
 
@@ -60,7 +81,7 @@
 
 <style>
 .pd-section {
-    padding: 60px 0 40px;
+    padding: 48px 0 40px;
     background: var(--white);
 }
 
@@ -71,13 +92,19 @@
 }
 
 .pd-breadcrumb {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #888;
+    margin-bottom: 28px;
 }
 
 .pd-breadcrumb a {
-    color: #666;
+    color: #888;
     text-decoration: none;
 }
 
@@ -85,7 +112,7 @@
     color: var(--charcoal);
 }
 
-.pd-breadcrumb span {
+.pd-breadcrumb strong {
     color: var(--charcoal);
     font-weight: 700;
 }
@@ -93,15 +120,16 @@
 .pd-main {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 48px;
+    gap: 56px;
     align-items: start;
-    margin-bottom: 60px;
+    margin-bottom: 64px;
 }
 
 .pd-image {
-    border: 1px solid #e0e0e0;
-    background: #f5f5f5;
-    aspect-ratio: 3 / 4;
+    background: #f4f4f4;
+    border: 1px solid #e5e5e5;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
 }
 
 .pd-image img {
@@ -113,60 +141,101 @@
 .pd-info {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 14px;
 }
 
 .pd-category {
-    display: inline-block;
     align-self: flex-start;
-    padding: 6px 12px;
+    padding: 5px 10px;
     background: var(--royal-yellow);
     color: var(--charcoal);
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
+    margin: 0;
 }
 
 .pd-title {
-    font-size: 2.25rem;
+    font-size: 2rem;
     font-weight: 900;
     color: var(--charcoal);
     text-transform: uppercase;
-    line-height: 1.2;
+    line-height: 1.15;
+    margin: 0;
+}
+
+.pd-availability {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1f8a4c;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     margin: 0;
 }
 
 .pd-price {
-    font-size: 1.5rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 1.75rem;
     font-weight: 700;
     color: var(--charcoal);
-    margin: 0;
+    margin: 4px 0 0;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #ededed;
+}
+
+.pd-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    padding: 10px 18px;
+    border: 1px solid var(--charcoal);
+    color: var(--charcoal);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.pd-whatsapp:hover {
+    background: var(--charcoal);
+    color: var(--white);
 }
 
 .pd-features {
-    color: #444;
-    line-height: 1.7;
+    margin-top: 12px;
+}
+
+.pd-block {
+    margin-bottom: 64px;
 }
 
 .pd-heading {
-    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
     font-weight: 900;
     color: var(--charcoal);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 20px;
-    padding-left: 12px;
-    border-left: 4px solid var(--royal-yellow);
+    margin: 0 0 18px;
+}
+
+.pd-heading::before {
+    content: '';
+    width: 8px;
+    height: 20px;
+    background: var(--royal-yellow);
 }
 
 .pd-body {
     color: #444;
     line-height: 1.8;
-}
-
-.pd-related {
-    margin-top: 60px;
+    font-size: 0.95rem;
 }
 
 .pd-grid {
@@ -187,17 +256,21 @@
 
 @media (max-width: 768px) {
     .pd-section {
-        padding: 40px 0 30px;
+        padding: 32px 0 24px;
     }
 
     .pd-main {
         grid-template-columns: 1fr;
         gap: 28px;
-        margin-bottom: 40px;
+        margin-bottom: 44px;
     }
 
     .pd-title {
-        font-size: 1.6rem;
+        font-size: 1.5rem;
+    }
+
+    .pd-block {
+        margin-bottom: 44px;
     }
 
     .pd-grid {
