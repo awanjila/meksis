@@ -1,148 +1,208 @@
 @extends('client.layout.app')
 @section('title')
-Meksis Engineering | Advanced Security Solutions  
+{{ $product->product_name }} | Meksis Engineering
 @endsection
 
 @section('meta_title')
-Categories | Shop Wabe Digital Agency   
+{{ $product->meta_title ?? $product->product_name }} | Meksis Engineering
 @endsection
 
 @section('meta_description')
-Boost your online presence with expert Website Design, efficient Point Of Sale systems, robust Ecommerce solutions, innovative Web Design, and secure Biometric Attendance systems. Enhance functionality and user experience.
+{{ $product->meta_description ?? \Illuminate\Support\Str::limit(strip_tags($product->product_description), 160) }}
 @endsection
 @section('content')
 
-		<!-- Main content Start -->
-        <div class="main-content">
-            
-          
-            <!-- Breadcrumbs Start -->
-            <div class="rs-breadcrumbs img3">
-                <div class="breadcrumbs-inner text-center">
-                    <h1 class="page-title">Shop {{$product->product_name}}</h1>
-                    <ul>
-                        <li title="Braintech - IT Solutions and Technology Startup HTML Template">
-                            <a class="active" href="/">Home</a>
-                        </li>
-                        <li title="Go To the Business category archives">
-                        <a class="active" href="/products/{{ $product->category->slug }}">{{ $product->category->category_name }}</a>
-                        </li>
-                        <li title="Go To the Business category archives">
-    <a class="active" href="/products/{{ $product->slug }}">{{ $product->product_name }}</a>
-</li>
+<section class="pd-section">
+    <div class="pd-container">
+        <nav class="pd-breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a> / <a href="/store">Shop</a> / <a href="{{ route('category.products', $product->category->slug) }}">{{ $product->category->category_name }}</a> / <span>{{ $product->product_name }}</span>
+        </nav>
 
-                        
-                    </ul>
-                </div>
+        <div class="pd-main">
+            <div class="pd-image">
+                <img src="{{ $product->image_url }}" alt="{{ $product->product_name }}">
             </div>
-            <!-- Breadcrumbs End -->
 
-            <!-- Shop Single Start -->
-            <div id="rs-single-shop" class="rs-single-shop pt-120 pb-80 md-pt-80 sm-pb-60">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-6 col-sm-12 sm-mb-30">
-                            <div class="single-product-image">
-                                <div class="images-single">
-                                    <img src="{{ asset($product->product_image) }}" alt="{{ $product->product_name }}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-sm-12">
-                            <div class="single-price-info pl-30 sm-pl-0">
-                                <h4 class="product-title">{{ $product->product_name }}</h4>
-                                <span class="single-price">Ksh {{ $product->selling_price }}.00</span>
-                                <p class="some-text">{!! $product->product_features !!}.</p>
-                                @if($product->isOrderable())
-                                <add-to-cart :product="{{ json_encode($product) }}"></add-to-cart>
-                                @endif
-                                <p class="category"><span>Category:</span><a href="/products/{{ $product->category->slug }}"> {{ $product->category->category_name }}</a></p>
-                            </div>
-                        </div> 
-                    </div>
-                    <div class="tab-area">
-                        <ul class="nav nav-tabs">
-                            <li><a class="active" href="#one" data-toggle="tab">Description</a></li>
-                            <li><a href="#two" data-toggle="tab">Reviews (0)</a></li>
-                        </ul>
+            <div class="pd-info">
+                <span class="pd-category">{{ $product->category->category_name }}</span>
+                <h1 class="pd-title">{{ $product->product_name }}</h1>
+                <p class="pd-price">Ksh {{ $product->selling_price }}</p>
 
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="one">
-                                <p class="dsc-p">{!! $product->product_description !!}</p>
-                            </div><!-- #one -->
+                @if($product->product_features)
+                    <div class="pd-features">{!! $product->product_features !!}</div>
+                @endif
 
-                            <div class="tab-pane" id="two">
-                                <div class="reviews-grid">
-                                    <div class="top-area">
-                                        <p>There are no reviews yet.</p>
-                                        <h6 class="mb-0">Be the first to review "{{$product->product_name}}"</h6>
-                                    </div>
-
-                                    <form class="comment-form" id="commentform">
-                                        <p class="comment-notes">Your email address will not be published. Required fields are marked *</p>
-
-                                        <div class="placeholder-cntrl">
-                                            <label>Name *</label>
-                                            <input type="text" name="name" size="30" required="">
-                                        </div>
-                                        <div class="placeholder-cntrl">
-                                            <label>Email *</label>
-                                            <input type="Email" name="email" size="30" required="">
-                                        </div>
-                                        <div class="ratings">Your rating
-                                            <ul>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star-o"></i></li>
-                                            </ul>
-                                        </div>
-                                        <div class="placeholder-cntrl">
-                                            <label>Your review *</label>
-                                            <textarea required=""></textarea>
-                                        </div>
-                                        <div class="btn-part">
-                                            <button class="add-btn ml-10" type="submit">Submit</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div><!-- #two -->
-                        </div>
-                    </div><!-- .tab-area -->
-                </div>
+                @if($product->isOrderable())
+                    <add-to-cart :product='@json($product)'></add-to-cart>
+                @endif
             </div>
-            <!-- Shop Single Start -->
+        </div>
 
-            <!--Shop part end-->
-            <div class="rs-shop-part pb-120 md-pb-75">
-                <div class="container">
-                    <h4 class="title pb-23 md-pb-10">Related products</h4>
-                    <div class="row">
+        <div class="pd-description">
+            <h2 class="pd-heading">DESCRIPTION</h2>
+            <div class="pd-body">{!! $product->product_description !!}</div>
+        </div>
 
+        @if($products->isNotEmpty())
+            <div class="pd-related">
+                <h2 class="pd-heading">RELATED PRODUCTS</h2>
+                <div class="pd-grid">
                     @foreach($products as $item)
-
-                        <div class="col-lg-4 col-md-6 col-sm-6 md-mb-45">
-                            <div class="product-list">
-                                <div class="image-product">
-                                    <img src="{{ asset($item->product_image) }}" alt="">
-                                    <div class="overley">
-                                        <a href="shop-single.html"><i class="flaticon-shopping-bag"></i></a>
-                                    </div>
-                                </div>
-                                <div class="content-desc text-center">
-                                    <h2 class="loop-product-title pt-15"><a href="shop-single.html">{{$item->product_name}}</a></h2>
-                                    <span class="price">Ksh {{$item->selling_price}}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <product-card :product='@json($item)'></product-card>
                     @endforeach
-                    </div>
                 </div>
             </div>
-            <!--Shop part end-->
+        @endif
+    </div>
+</section>
 
-        </div> 
-        <!-- Main content End -->
-     <faqs-section></faqs-section>
+<faqs-section></faqs-section>
+
+<style>
+.pd-section {
+    padding: 60px 0 40px;
+    background: var(--white);
+}
+
+.pd-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 50px;
+}
+
+.pd-breadcrumb {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 32px;
+}
+
+.pd-breadcrumb a {
+    color: #666;
+    text-decoration: none;
+}
+
+.pd-breadcrumb a:hover {
+    color: var(--charcoal);
+}
+
+.pd-breadcrumb span {
+    color: var(--charcoal);
+    font-weight: 700;
+}
+
+.pd-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 60px;
+}
+
+.pd-image {
+    border: 1px solid #e0e0e0;
+    background: #f5f5f5;
+    aspect-ratio: 3 / 4;
+}
+
+.pd-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pd-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pd-category {
+    display: inline-block;
+    align-self: flex-start;
+    padding: 6px 12px;
+    background: var(--royal-yellow);
+    color: var(--charcoal);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.pd-title {
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: var(--charcoal);
+    text-transform: uppercase;
+    line-height: 1.2;
+    margin: 0;
+}
+
+.pd-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--charcoal);
+    margin: 0;
+}
+
+.pd-features {
+    color: #444;
+    line-height: 1.7;
+}
+
+.pd-heading {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--charcoal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+    padding-left: 12px;
+    border-left: 4px solid var(--royal-yellow);
+}
+
+.pd-body {
+    color: #444;
+    line-height: 1.8;
+}
+
+.pd-related {
+    margin-top: 60px;
+}
+
+.pd-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+@media (max-width: 1024px) {
+    .pd-container {
+        padding: 0 24px;
+    }
+
+    .pd-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .pd-section {
+        padding: 40px 0 30px;
+    }
+
+    .pd-main {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        margin-bottom: 40px;
+    }
+
+    .pd-title {
+        font-size: 1.6rem;
+    }
+
+    .pd-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
 @endsection

@@ -1,88 +1,137 @@
-
 @extends('client.layout.app')
 @section('title')
-Meksis Engineering | Advanced Security Solutions  
+{{ $category->category_name }} | Meksis Engineering
 @endsection
 
 @section('meta_title')
-Categories | Shop Wabe Digital Agency   
+{{ $category->category_name }} | Shop Meksis Engineering
 @endsection
 
 @section('meta_description')
-Boost your online presence with expert Website Design, efficient Point Of Sale systems, robust Ecommerce solutions, innovative Web Design, and secure Biometric Attendance systems. Enhance functionality and user experience.
+Browse {{ $category->category_name }} products from Meksis Engineering and add them to your cart.
 @endsection
 @section('content')
-        <div class="main-content">
-         
-            <!-- Breadcrumbs Start -->
-            <div class="rs-breadcrumbs img3">
-                <div class="breadcrumbs-inner text-center">
-                    <h1 class="page-title">Shop {{ $category->category_name }}</h1>
-                    <ul>
-                        <li title="Braintech - IT Solutions and Technology Startup HTML Template">
-                            <a class="active" href="/">Home</a>
-                        </li>
-                        <li>{{ $category->category_name }}</li>
-                    </ul>
-                </div>
-            </div>
-            <!-- Breadcrumbs End -->
 
-            <!--Shop part start-->
-            <div class="rs-shop-part pt-120 pb-120 md-pt-70 md-pb-80">
-                <div class="container">
-                   	<div class="row align-items-center rs-vertical-middle shorting mb-50">
-                   	    <div class="col-sm-6 col-12">
-                   	        <p class="woocommerce-result-count">Showing 1-9 of 12 results</p>
-                   	    </div>
-                   	    <div class="col-sm-6 col-12 sm-mt-20">
-                   	        <select class="from-control">
-                   	            <option>Default sorting</option>
-                   	            <option>Sort by popularity</option>
-                   	            <option>Sort by average rating</option>
-                   	            <option>Sort by lates</option>
-                   	            <option>Sort by price: low to high</option>
-                   	            <option>Sort by price: high to low</option>
-                   	        </select>
-                   	    </div>
-                   	</div>
-                   	<div class="row">
+<section class="shop-section">
+    <div class="shop-container">
+        <div class="shop-header">
+            <h1 class="shop-title">{{ $category->category_name }}</h1>
+            <p class="shop-subtitle">Browse {{ $category->category_name }} products and add what you need to your cart</p>
+        </div>
 
-                       @foreach($items as $p)
-                   	    <div class="col-lg-4 col-md-6 mb-80">
-                   	        <div class="product-list">
-                   	            <div class="image-product">
-                                   <img src="{{ asset($p->product_image) }}" alt="{{ $p->product_name }}">
-                   	                <div class="overley">
-                   	                    <a href="shop-single.html"><i class="flaticon-shopping-bag"></i></a>
-                   	                </div>
-                   	            </div>
-                   	            <div class="content-desc text-center">
-                   	                <h2 class="loop-product-title pt-15"><a href="{{ route('show.product',$p->slug) }}">{{ $p->product_name }}</a></h2>
-                   	                <span class="price">Ksh {{ $p->selling_price }}.00</span>
-                   	            </div>
-                   	        </div>
-                   	    </div>
+        <div class="shop-filters">
+            <a href="/store" class="shop-filter">All</a>
+            @foreach($categories as $cat)
+                <a href="{{ route('category.products', $cat->slug) }}" class="shop-filter {{ $cat->id === $category->id ? 'active' : '' }}">{{ $cat->category_name }}</a>
+            @endforeach
+        </div>
 
-                        @endforeach
-                   	    
-                   	    
+        <div class="shop-grid">
+            @forelse($items as $product)
+                <product-card :product='@json($product)'></product-card>
+            @empty
+                <p class="shop-empty">No products are available in this category yet.</p>
+            @endforelse
+        </div>
+    </div>
+</section>
 
+<faqs-section></faqs-section>
 
-                   	     <div class="col-lg-12 text-center pt-40">
-                   	         <ul class="pagination-part">
-                   	             <li class="active"><a href="#">1</a></li>
-                   	             <li><a href="#">2</a></li>
-                   	             <li><a class="next-page" href="#">Next</a></li>
-                   	         </ul> 
-                   	     </div>
-                   	</div>
-                </div>
-            </div>
-            <!--Shop part end-->
-        </div> 
-        <!-- Main content End -->
+<style>
+.shop-section {
+    padding: 60px 0 40px;
+    background: var(--white);
+}
 
-        <faqs-section></faqs-section>
+.shop-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 50px;
+}
+
+.shop-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.shop-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--charcoal);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 16px;
+}
+
+.shop-subtitle {
+    color: #666;
+    font-size: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.shop-filters {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.shop-filter {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: var(--charcoal);
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 0.2s, border-color 0.2s;
+}
+
+.shop-filter:hover,
+.shop-filter.active {
+    background: var(--royal-yellow);
+    border-color: var(--royal-yellow);
+    color: var(--charcoal);
+}
+
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+}
+
+.shop-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #666;
+}
+
+@media (max-width: 1024px) {
+    .shop-container {
+        padding: 0 24px;
+    }
+
+    .shop-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .shop-section {
+        padding: 40px 0 30px;
+    }
+
+    .shop-title {
+        font-size: 1.75rem;
+    }
+
+    .shop-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+}
+</style>
 @endsection
-     

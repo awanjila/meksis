@@ -35,7 +35,9 @@ class CatalogController extends Controller
         ->filter(fn (Product $product) => $product->isOrderable())
         ->values();
 
-    return view('client.shop.category_product_list', compact('category', 'items'));
+    $categories = Category::orderBy('category_name')->get();
+
+    return view('client.shop.category_product_list', compact('category', 'categories', 'items'));
 }//endmethod
 
 
