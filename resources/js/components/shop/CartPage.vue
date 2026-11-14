@@ -222,8 +222,9 @@ export default {
 
 .btn-checkout:hover,
 .btn-shop:hover {
-  background: transparent;
-  color: var(--royal-yellow);
+  background: var(--charcoal);
+  border-color: var(--charcoal);
+  color: var(--white);
 }
 
 @media (max-width: 768px) {

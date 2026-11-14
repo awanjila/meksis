@@ -42,6 +42,7 @@
           </div>
         </div>
 
+        <aside class="checkout-aside">
         <div class="checkout-summary">
           <h3 class="summary-title">Your Order</h3>
           <div v-for="item in cartItems" :key="item.id" class="summary-row">
@@ -64,6 +65,7 @@
             {{ isSubmitting ? 'Placing Order...' : 'Place Order' }}
           </button>
         </div>
+        </aside>
       </form>
     </div>
   </div>
@@ -156,7 +158,7 @@ export default {
   position: relative;
   color: var(--charcoal);
   font-family: 'Arial Narrow', sans-serif;
-  max-width: 900px;
+  max-width: 1100px;
   margin: 0 auto;
 }
 
@@ -184,8 +186,18 @@ export default {
 }
 
 .checkout-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: start;
+}
+
+.checkout-aside {
+  position: sticky;
+  top: 100px;
   border: 1px solid #e5e5e5;
-  padding: 32px;
+  background: #fafafa;
+  padding: 28px;
 }
 
 .form-grid {
@@ -235,9 +247,8 @@ export default {
 }
 
 .checkout-summary {
-  margin-top: 32px;
-  border-top: 1px solid #e5e5e5;
-  padding-top: 24px;
+  margin: 0;
+  padding: 0;
 }
 
 .summary-title {
@@ -270,11 +281,11 @@ export default {
 }
 
 .submit-wrapper {
-  text-align: right;
-  margin-top: 32px;
+  margin-top: 24px;
 }
 
 .submit-button {
+  width: 100%;
   padding: 14px 28px;
   background: var(--royal-yellow);
   border: 1px solid var(--royal-yellow);
@@ -288,13 +299,35 @@ export default {
 }
 
 .submit-button:hover:not(:disabled) {
-  background: transparent;
-  color: var(--royal-yellow);
+  background: var(--charcoal);
+  border-color: var(--charcoal);
+  color: var(--white);
 }
 
 .submit-button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+@media (max-width: 900px) {
+  .checkout-form {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .checkout-aside {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-group.full-width {
+    grid-column: auto;
+  }
 }
 
 @media (max-width: 768px) {

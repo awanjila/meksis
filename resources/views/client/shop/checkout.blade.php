@@ -1,6 +1,6 @@
 @extends('client.layout.app')
 @section('title')
-Meksis Engineering | Advanced Security Solutions
+Checkout | Meksis Engineering
 @endsection
 
 @section('meta_title')
@@ -12,33 +12,20 @@ Enter your details to place your order.
 @endsection
 @section('content')
 
-        <!-- Main content Start -->
-        <div class="main-content">
+<section class="pd-section">
+    <div class="pd-container">
+        <nav class="pd-breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span>/</span>
+            <a href="/cart">Cart</a>
+            <span>/</span>
+            <strong>Checkout</strong>
+        </nav>
 
-            <!-- Breadcrumbs Start -->
-            <div class="rs-breadcrumbs img3">
-                <div class="breadcrumbs-inner text-center">
-                    <h1 class="page-title">Checkout</h1>
-                    <ul>
-                        <li>
-                            <a class="active" href="/">Home</a>
-                        </li>
-                        <li>
-                            <a href="/cart">Cart</a>
-                        </li>
-                        <li>Checkout</li>
-                    </ul>
-                </div>
-            </div>
-            <!-- Breadcrumbs End -->
+        <h1 class="pd-page-title">Checkout</h1>
 
-            <!-- Shop part start -->
-            <div class="rs-shop-part pt-120 pb-120 md-pt-70 md-pb-80">
-                <div class="container">
-                    <checkout-page></checkout-page>
-                </div>
-            </div>
-            <!-- Shop part end -->
-        </div>
-        <!-- Main content End -->
+        <checkout-page></checkout-page>
+    </div>
+</section>
+
 @endsection
