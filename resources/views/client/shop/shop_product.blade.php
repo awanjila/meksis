@@ -53,7 +53,9 @@ Boost your online presence with expert Website Design, efficient Point Of Sale s
                                 <h4 class="product-title">{{ $product->product_name }}</h4>
                                 <span class="single-price">Ksh {{ $product->selling_price }}.00</span>
                                 <p class="some-text">{!! $product->product_features !!}.</p>
+                                @if($product->isOrderable())
                                 <add-to-cart :product="{{ json_encode($product) }}"></add-to-cart>
+                                @endif
                                 <p class="category"><span>Category:</span><a href="/products/{{ $product->category->slug }}"> {{ $product->category->category_name }}</a></p>
                             </div>
                         </div> 

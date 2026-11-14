@@ -49,7 +49,7 @@ export default {
         id: props.product.id,
         name: props.product.product_name,
         price: props.product.selling_price,
-        image: props.product.product_image,
+        image: props.product.image_url || props.product.product_image,
         quantity: quantity.value
       });
     };
