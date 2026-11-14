@@ -19,4 +19,5 @@
 <blog-details :slug="'{{ $blog->slug }}'"> </blog-details>
 <!-- Main content Start -->
 
-    @endsection
+    <faqs-section></faqs-section>
+@endsection

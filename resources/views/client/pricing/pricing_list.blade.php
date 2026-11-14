@@ -92,4 +92,5 @@ Boost your online presence with expert Website Design, efficient Point Of Sale s
 
 
 
+<faqs-section></faqs-section>
 @endsection

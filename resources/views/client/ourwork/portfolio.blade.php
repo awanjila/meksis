@@ -8,4 +8,5 @@
 
 @section('content')
     <our-works></our-works>
+<faqs-section></faqs-section>
 @endsection

@@ -13,4 +13,5 @@
         // Pass category slug to Vue component
         window.categorySlug = '{{ $categorySlug }}';
     </script>
+<faqs-section></faqs-section>
 @endsection

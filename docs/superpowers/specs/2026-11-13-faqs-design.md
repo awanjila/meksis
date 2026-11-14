@@ -226,3 +226,43 @@ Page head: `resources/views/client/layout/app.blade.php` hardcodes `<title>` and
 - Whether to add the header nav link in addition to the footer link (see Navigation).
 - Seeder wording details, as long as no unverifiable commercial claims are introduced.
 - Whether to add an index on `(is_active, sort_order)` — safe to include.
+
+## Addendum (2026-11-14): FAQ section on every public content page
+
+Intent: The shared FAQ block should appear on every public content page, not only the landing, About, and Contact pages. The blog list and blog detail pages were the notable gaps.
+
+Scope:
+
+- Already covered and unchanged: `/` (landing), `/about`, `/contact` (embedded in their Vue pages) and `/faqs` (full list).
+- New placements, all added as `<faqs-section></faqs-section>`:
+  - `resources/views/client/services.blade.php` - products list (`/products`)
+  - `resources/views/client/services/service_detail.blade.php` - product detail (`show/product/{slug}`)
+  - `resources/views/client/blog/blog_list.blade.php` - blog list (`/blogs`)
+  - `resources/views/client/blog/blog_details.blade.php` - blog detail (`show/blog/{slug}`)
+  - `resources/views/client/ourwork/portfolio.blade.php` - our works
+  - `resources/views/client/ourwork/portfolio_details.blade.php` - portfolio category
+  - `resources/views/client/pricing/pricing_list.blade.php` - pricing list
+  - `resources/views/client/pricing/pricing_details.blade.php` - pricing detail
+  - `resources/views/client/shop/shop_categories.blade.php` - shop categories (`/store`)
+  - `resources/views/client/shop/shop_product.blade.php` - shop product detail
+  - `resources/views/client/shop/category_product_list.blade.php` - category product list
+- Excluded: cart, checkout, payment success/cancel, search, login/register/password screens, and the admin.
+
+How:
+
+- Every public page renders inside the layout's `#app` element (`resources/views/client/layout/app.blade.php`), and `faqs-section` is globally registered in `resources/js/app.js`. The embed therefore lives in the Blade view and needs no change to the Vue page components.
+- Add the tag as the last element of `@section('content')` in each listed view, so it sits above the WhatsApp button and footer.
+- The component keeps its default six-item limit, header, and "View all FAQs" link. `/faqs` keeps its full-list behavior with `:show-header="false"` and is not changed.
+
+Non-goals:
+
+- Per-page FAQ sets, categories, or different limits.
+- Changes to `FaqsSection.vue`, the FAQ API, the FAQ admin, or `/faqs`.
+- FAQ blocks on transactional or auth pages.
+
+Acceptance:
+
+- Each listed page renders the FAQ block above the footer when at least one FAQ is active.
+- When no FAQs are active, each page shows no empty FAQ block (the component's existing `v-if="faqs.length"` covers this).
+- `/faqs` still renders the full list without a duplicated section header.
+- No FAQ data, admin, or API changes.

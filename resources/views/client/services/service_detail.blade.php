@@ -16,4 +16,5 @@
 
 <service-detail></service-detail>
 
+<faqs-section></faqs-section>
 @endsection

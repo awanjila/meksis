@@ -79,6 +79,7 @@
             <!-- Pricing section end -->
 
         </div> 
+<faqs-section></faqs-section>
         <!-- Mai
 
     @endsection
