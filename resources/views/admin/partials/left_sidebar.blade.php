@@ -127,6 +127,13 @@
                 <li class="menu-title mt-2">Apps</li>
 
                 <li>
+                    <a href="{{ route('orders.index') }}">
+                        <i class="mdi mdi-cart-outline"></i>
+                        <span> ORDERS </span>
+                    </a>
+                </li>
+
+                <li>
                     <a href="#sidebarEmail" data-bs-toggle="collapse">
                         <i class="mdi mdi-email-multiple-outline"></i>
                         <span> Email </span>

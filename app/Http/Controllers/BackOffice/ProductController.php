@@ -167,7 +167,16 @@ class ProductController extends Controller
 
 
 public function DeleteProduct($id){
-    Product::findOrFail($id)->delete();
+    $product = Product::findOrFail($id);
+
+    if (\App\Models\OrderItem::where('product_id', $product->id)->exists()) {
+        return redirect()->back()->with([
+            'message' => 'This product appears in an order and cannot be deleted. Set its stock to 0 instead.',
+            'alert-type' => 'warning',
+        ]);
+    }
+
+    $product->delete();
 
     $notification = array(
         'message' => 'Product Deleted Successfully',

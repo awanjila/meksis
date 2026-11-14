@@ -10,6 +10,7 @@ use App\Http\Controllers\BackOffice\PortfolioController;
 use App\Http\Controllers\BackOffice\CategoryController;
 use App\Http\Controllers\BackOffice\BlogController;
 use App\Http\Controllers\BackOffice\FaqController;
+use App\Http\Controllers\BackOffice\OrderController as BackOfficeOrderController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\CatalogController;
 use App\Http\Controllers\OrderController;
@@ -237,6 +238,12 @@ Route::controller(ProductController::class)->group(function(){
 
 
 })->middleware(['auth', 'verified']);
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('orders', [BackOfficeOrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [BackOfficeOrderController::class, 'show'])->name('orders.show');
+    Route::post('orders/{order}/status', [BackOfficeOrderController::class, 'updateStatus'])->name('orders.status');
+});
 
 //All Category Route
 Route::controller(CategoryController::class)->group(function(){
