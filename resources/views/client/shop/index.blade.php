@@ -43,7 +43,7 @@ Browse orderable products from Meksis Engineering and add them to your cart.
 
                     <div class="row">
                         @forelse($products as $product)
-                            <product-card :product='@json($product, JSON_HEX_APOS | JSON_HEX_QUOT)'></product-card>
+                            <product-card :product='@json($product)'></product-card>
                         @empty
                             <div class="col-12 text-center">
                                 <p>No products are available yet.</p>

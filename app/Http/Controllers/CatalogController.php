@@ -12,8 +12,7 @@ class CatalogController extends Controller
 
     public function index(): View
     {
-        $products = Product::with('category')
-            ->latest()
+        $products = Product::latest()
             ->get()
             ->filter(fn (Product $product) => $product->isOrderable())
             ->values();
@@ -49,7 +48,9 @@ public function show($slug)
 
     $products = Product::where('category_id', $category->id)
                         ->where('id', '!=', $product->id)
-                        ->get();
+                        ->get()
+                        ->filter(fn (Product $item) => $item->isOrderable())
+                        ->values();
 
 
     return view('client.shop.shop_product', compact('product', 'products'));

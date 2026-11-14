@@ -13,11 +13,10 @@ class ShopCatalogueTest extends TestCase
 
     private function category(): Category
     {
-        return Category::create([
-            'category_name' => 'Water Tanks',
-            'meta_title' => 'Water Tanks',
-            'slug' => 'water-tanks',
-        ]);
+        return Category::firstOrCreate(
+            ['slug' => 'water-tanks'],
+            ['category_name' => 'Water Tanks', 'meta_title' => 'Water Tanks']
+        );
     }
 
     private function product(array $overrides = []): Product
@@ -84,6 +83,16 @@ class ShopCatalogueTest extends TestCase
             ->assertOk()
             ->assertSee('add-to-cart', false)
             ->assertSee('45000');
+    }
+
+    public function test_related_products_hide_non_orderable_products(): void
+    {
+        $product = $this->product();
+        $this->product(['product_name' => 'Free Tank', 'slug' => 'free-tank', 'selling_price' => '0']);
+
+        $this->get('/show/product-1/'.$product->slug)
+            ->assertOk()
+            ->assertDontSee('Free Tank');
     }
 
     public function test_product_exposes_an_absolute_image_url_and_orderable_flag(): void
