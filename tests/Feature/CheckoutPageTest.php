@@ -15,6 +15,15 @@ class CheckoutPageTest extends TestCase
         $this->get('/checkout')->assertOk()->assertSee('checkout-page', false);
     }
 
+    public function test_checkout_component_renders_and_posts_the_honeypot_field(): void
+    {
+        $component = file_get_contents(base_path('resources/js/components/shop/CheckoutPage.vue'));
+
+        $this->assertStringContainsString('name="website"', $component);
+        $this->assertStringContainsString('v-model="form.website"', $component);
+        $this->assertStringContainsString('website: form.website', $component);
+    }
+
     public function test_confirmation_page_shows_the_order_by_reference(): void
     {
         $order = Order::create([

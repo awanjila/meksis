@@ -54,6 +54,11 @@
           </div>
         </div>
 
+        <div class="honeypot" aria-hidden="true">
+          <label for="checkout-website">Leave this field empty</label>
+          <input id="checkout-website" v-model="form.website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+        </div>
+
         <div class="submit-wrapper">
           <button type="submit" class="submit-button" :disabled="isSubmitting">
             {{ isSubmitting ? 'Placing Order...' : 'Place Order' }}
@@ -107,7 +112,7 @@ export default {
         const response = await axios.post('/api/orders', {
           ...form,
           items: cartStore.cartItems.map(({ id, quantity }) => ({ id, quantity })),
-          website: ''
+          website: form.website
         });
 
         cartStore.clearCart();
@@ -146,6 +151,7 @@ export default {
 }
 
 .checkout-page {
+  position: relative;
   color: var(--charcoal);
   font-family: 'Arial Narrow', sans-serif;
   max-width: 900px;
@@ -251,6 +257,14 @@ export default {
   margin-top: 8px;
   font-size: 18px;
   text-transform: uppercase;
+}
+
+.honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
 }
 
 .submit-wrapper {
