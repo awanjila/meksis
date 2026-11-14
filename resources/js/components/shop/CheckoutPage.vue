@@ -55,8 +55,8 @@
         </div>
 
         <div class="honeypot" aria-hidden="true">
-          <label for="checkout-website">Leave this field empty</label>
-          <input id="checkout-website" v-model="form.website" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <label for="checkout-hp-field">Leave this field empty</label>
+          <input id="checkout-hp-field" v-model="form.hp_field" name="hp_field" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
         </div>
 
         <div class="submit-wrapper">
@@ -90,7 +90,7 @@ export default {
       company: '',
       address: '',
       notes: '',
-      website: ''
+      hp_field: ''
     });
 
     const isSubmitting = ref(false);
@@ -112,7 +112,7 @@ export default {
         const response = await axios.post('/api/orders', {
           ...form,
           items: cartStore.cartItems.map(({ id, quantity }) => ({ id, quantity })),
-          website: form.website
+          hp_field: form.hp_field
         });
 
         cartStore.clearCart();

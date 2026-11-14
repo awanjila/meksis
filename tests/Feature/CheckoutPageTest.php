@@ -19,9 +19,9 @@ class CheckoutPageTest extends TestCase
     {
         $component = file_get_contents(base_path('resources/js/components/shop/CheckoutPage.vue'));
 
-        $this->assertStringContainsString('name="website"', $component);
-        $this->assertStringContainsString('v-model="form.website"', $component);
-        $this->assertStringContainsString('website: form.website', $component);
+        $this->assertStringContainsString('name="hp_field"', $component);
+        $this->assertStringContainsString('v-model="form.hp_field"', $component);
+        $this->assertStringContainsString('hp_field: form.hp_field', $component);
     }
 
     public function test_checkout_component_lists_every_validation_error(): void

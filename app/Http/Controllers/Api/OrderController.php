@@ -22,7 +22,7 @@ class OrderController extends Controller
 
     public function store(Request $request): JsonResponse
     {
-        if ($request->filled('website')) {
+        if ($request->filled('hp_field')) {
             return response()->json([
                 'success' => true,
                 'reference' => 'MEK-00000000',

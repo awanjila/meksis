@@ -53,7 +53,7 @@ class OrderApiTest extends TestCase
             'address' => 'Industrial Area, Nairobi',
             'notes' => 'Call before delivery',
             'items' => [['id' => $this->product()->id, 'quantity' => 2]],
-            'website' => '',
+            'hp_field' => '',
         ], $overrides);
     }
 
@@ -244,7 +244,7 @@ class OrderApiTest extends TestCase
         $product = $this->product();
 
         $this->postJson('/api/orders', $this->payload([
-            'website' => 'spam',
+            'hp_field' => 'spam',
             'items' => [['id' => $product->id, 'quantity' => 1]],
         ]))->assertCreated()->assertJsonPath('success', true);
 
