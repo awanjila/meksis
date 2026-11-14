@@ -38,6 +38,4 @@ Review the products in your cart before checking out.
             <!-- Shop part end -->
         </div>
         <!-- Main content End -->
-
-        <faqs-section></faqs-section>
 @endsection

@@ -553,21 +553,6 @@ export default {
   color: var(--royal-yellow);
 }
 
-.cart-count {
-  position: absolute;
-  top: -4px;
-  right: -6px;
-  min-width: 18px;
-  height: 18px;
-  padding: 0 4px;
-  background: var(--royal-yellow);
-  color: var(--charcoal);
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 18px;
-  text-align: center;
-}
-
 /* Products Dropdown */
 .products-dropdown {
   position: relative;
