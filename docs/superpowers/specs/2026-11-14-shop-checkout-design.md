@@ -23,7 +23,7 @@ Turn the existing back-office product catalogue into a real front-end shop, add 
 - `GET /checkout` shows a checkout form (name, company optional, email, phone, delivery address, notes) and the order summary.
 - `POST /api/orders` validates the cart, recalculates every price from the database, saves an `orders` row plus `order_items`, decrements stock where stock is positive, and emails both the customer and `info@meksis.co.ke`.
 - `GET /order/{reference}` shows a thank-you / order summary page after checkout.
-- The header gets a **SHOP** link and a cart icon with an item count that links to `/cart`. The **PRODUCTS** dropdown lists shop categories instead of services.
+- The header gets a **SHOP** link and a cart icon with an item count that links to `/cart`. The existing **PRODUCTS** dropdown and its service links are left exactly as they are; the shop is a separate area.
 - A new admin **Orders** screen lists orders, shows one order in detail, and lets the owner update order/payment status.
 - Guest checkout works: no login, no customer account required.
 - Only products with a usable price appear in the shop and can be ordered.
@@ -62,7 +62,7 @@ Turn the existing back-office product catalogue into a real front-end shop, add 
 - `database/migrations/2025_04_08_003338_create_order_items_table.php` defines `order_id`, `product_id` (`cascadeOnDelete`), `quantity`, `unit_price`, `subtotal`. There is no `OrderItem` model. Because the product admin hard-deletes products, a deletion currently removes that product's lines from past orders.
 - `database/migrations/2023_04_08_000803_create_products_table.php` defines `product_name`, `slug`, `category_id`, `product_image`, `selling_price` (string), `product_store` (string stock), `product_description`, `product_features`.
 - `resources/views/client/layout/app.blade.php` wraps the header, Blade content, and footer in `<div id="app">`; Vue components inside Blade views work today.
-- `resources/js/components/layout/Header.vue` fetches `/api/services` for the PRODUCTS dropdown and links to `/show/product/{slug}` (services, not products). There is no shop or cart link.
+- `resources/js/components/layout/Header.vue` fetches `/api/services` for the PRODUCTS dropdown and links to `/show/product/{slug}` (services, not products). There is no shop or cart link. The dropdown is out of scope and stays unchanged.
 - `app/Http/Controllers/ContactController.php` sends mail through `Mail::to(...)->send(new ContactMail(...))` inside try/catch, and is the pattern to follow.
 - Mail is SMTP from `.env` (`MAIL_FROM_ADDRESS=info@wabestudio.co.ke`, host `business79.web-hosting.com`). `QUEUE_CONNECTION=sync`.
 - Admin routes live in `routes/web.php` under `auth` + `verified`; `resources/views/admin/admin_master.blade.php` and `resources/views/admin/partials/left_sidebar.blade.php` are the layout/sidebar.
@@ -208,7 +208,7 @@ New Vue components, registered globally in `app.js`:
 
 Updated:
 
-- `layout/Header.vue` — add SHOP (`/store`) and the cart icon on desktop and mobile; PRODUCTS dropdown now lists categories from `/api/categories` and links to `/category/{slug}`.
+- `layout/Header.vue` — add SHOP (`/store`) and the cart icon on desktop and mobile only. The PRODUCTS/services dropdown is not touched.
 - `shop/AddToCart.vue` — absolute image URL, guard quantity.
 - `app.js` — replace the old shop registrations with the new ones.
 
@@ -309,6 +309,6 @@ Manual verification: build the assets, browse `/store` → add to cart → `/car
 - The old fixed-position cart/checkout drawers are deleted rather than kept alongside the new pages.
 - Order references are `MEK-XXXXXXXX` (8 uppercase alphanumerics).
 - The business notification address is `info@meksis.co.ke`, configurable through `SHOP_NOTIFICATION_EMAIL`.
-- The PRODUCTS dropdown switches from services to shop categories, since the menu is labelled Products.
+- The existing PRODUCTS/services dropdown is left exactly as it is. The shop is a separate area that reads the `Product` model; it does not rewire the services menu.
 - The shop index shows all products, with category filter links; no pagination in this change.
 - `Product` gets an `image_url` accessor so the cart stores a full image URL.
