@@ -10,6 +10,7 @@ use App\Http\Controllers\BackOffice\PortfolioController;
 use App\Http\Controllers\PaypalController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\FaqController;
+use App\Http\Controllers\Api\HomeContentController;
 use App\Models\BackOffice\Blog;
 
 
@@ -88,6 +89,9 @@ Route::get('/blogs', function () {
 });
 
 Route::get('/faqs', [FaqController::class, 'index']);
+
+Route::get('/home-slides', [HomeContentController::class, 'slides']);
+Route::get('/about', [HomeContentController::class, 'about']);
 
 Route::get('/blog-categories', function () {
     return \App\Models\BackOffice\BlogCategory::select('id', 'name', 'slug')->get();
