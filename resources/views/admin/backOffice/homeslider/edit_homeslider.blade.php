@@ -107,7 +107,6 @@
                 var title = $('#title-input').val();
                 var shortTitle = $('#short-title-input').val();
                 var videoUrl = $('#video-url-input').val();
-                var image = $('#image-input').val();
 
                 // Perform validation
                 var isValid = true;
@@ -124,11 +123,6 @@
 
                 if (videoUrl.trim() === '') {
                     $('#video-url-error').text('Video URL is required.');
-                    isValid = false;
-                }
-
-                if (image.trim() === '') {
-                    $('#image-error').text('Slider Image is required.');
                     isValid = false;
                 }
 

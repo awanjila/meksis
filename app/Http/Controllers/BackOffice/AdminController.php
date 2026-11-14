@@ -47,6 +47,8 @@ class AdminController extends Controller
         $validateData = $request->validate([
             'title' => 'required',
             'short_title' => 'required',
+            'video_url' => 'nullable',
+            'home_slide' => 'nullable|image|max:5120',
         ]);
 
         if ($request->file('home_slide')) {
@@ -58,6 +60,7 @@ class AdminController extends Controller
             $home_slider = new HomeSlider();
             $home_slider->title = $request->title;
             $home_slider->short_description = $request->short_title;
+            $home_slider->video_url = $request->video_url;
             $home_slider->home_slide = $save_url;
             $home_slider->save();
 
@@ -73,6 +76,7 @@ class AdminController extends Controller
             $home_slider = new HomeSlider();
             $home_slider->title = $request->title;
             $home_slider->short_description = $request->short_title;
+            $home_slider->video_url = $request->video_url;
             $home_slider->save();
 
             $notification = [
@@ -98,8 +102,10 @@ class AdminController extends Controller
         public function UpdateSlider(Request $request){
 
             $validateData = $request->validate([
+            'id' => 'required|integer|exists:home_sliders,id',
             'title' => 'required',
             'short_title' => 'required',
+            'home_slide' => 'nullable|image|max:5120',
         ]);
 
 
