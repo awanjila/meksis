@@ -56,6 +56,9 @@ Route::get('/portfolios/category/{categorySlug}', [PortfolioController::class, '
 // Contact API route
 Route::post('/contact', [ContactController::class, 'store']);
 
+Route::post('/orders', [\App\Http\Controllers\Api\OrderController::class, 'store'])
+    ->middleware('throttle:10,1');
+
 // Services API routes
 Route::get('/services', function() {
     return \App\Models\Service::select('id', 'name', 'slug', 'description', 'image')->get();
