@@ -37,13 +37,17 @@ class CategoryController extends Controller
             'meta_title' => 'required|string',
             'category_description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id', // Validate that the parent_id exists in the categories table
+            'category_image' => 'nullable|image|max:5120',
         ]);
     
         $slug = Str::slug($request->category_name);
-        $category_image = $request->file('category_image');
-        $name_gen = $slug . '.' . $category_image->getClientOriginalExtension();
-        Image::make($category_image)->resize(300, 398)->save(public_path('upload/categories/' . $name_gen));
-        $save_url = 'upload/categories/' . $name_gen;
+        $save_url = null;
+
+        if ($category_image = $request->file('category_image')) {
+            $name_gen = $slug . '.' . $category_image->getClientOriginalExtension();
+            Image::make($category_image)->resize(300, 398)->save(public_path('upload/categories/' . $name_gen));
+            $save_url = 'upload/categories/' . $name_gen;
+        }
 
         $category = new Category([
             'category_name' => $data['category_name'],
@@ -68,13 +72,13 @@ class CategoryController extends Controller
         // ]);
 
 
-        Category::insert([
+        Category::create([
             'category_name'=> $request->category_name,
+            'meta_title' => $request->meta_title,
             'category_description' => $request->category_description,
             'slug' => Str::slug($request->category_name), // Generate slug from the category name
             'category_image' => $save_url,
-            'created_at'=>Carbon::now(),
-         ]);
+        ]);
        
 
         $notification = array(
